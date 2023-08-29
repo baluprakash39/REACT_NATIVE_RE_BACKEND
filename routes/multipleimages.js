@@ -13,6 +13,17 @@ const s3 = new AWS.S3({
   region: config.region,
 });
 
+router.get('/images', async (req,res) =>{ 
+  try{    
+      const images = await FormData.find({})  
+      res.status(200).json({
+          Totalimages : images,
+      })
+  }catch (error) {
+      res.status(400).send(error)
+  } 
+  })
+
 router.post('/upload/:id', async (req, res) => {
   try {
     if (!req.files || !req.files.images) {
@@ -22,7 +33,7 @@ router.post('/upload/:id', async (req, res) => {
     const files = Array.isArray(req.files.images) ? req.files.images : [req.files.images];
 
     const uploadPromises = files.map((file) => {
-      const uniqueKey = Date.now().toString(); // Use a unique key for each file
+      const uniqueKey = Date.now().toString();        // Use a unique key for each file
       const fileExtension = file.name.split('.').pop();
       const fileName = `${uniqueKey}.${fileExtension}`;
 
@@ -30,7 +41,7 @@ router.post('/upload/:id', async (req, res) => {
         Bucket: 'laxmi-bucket',
         Key: fileName,
         Body: file.data,
-        ACL: 'public-read', // Set the ACL as per your requirements
+        ACL: 'public-read',                         // Set the ACL as per your requirements
       };
 
       return s3.upload(params).promise();
@@ -42,9 +53,10 @@ router.post('/upload/:id', async (req, res) => {
     const query = { "_id": req.params.id };
     const Rest = {
       $push: {
-        "adminallimages": fileUrls,
-        "cardimages":fileUrls,
-      },
+        "adminallimages": {
+          $each: fileUrls
+        }
+      }
     };
 
     const updatedDoc = await FormData.findOneAndUpdate(query, Rest).select().exec();
@@ -67,6 +79,35 @@ router.post('/upload/:id', async (req, res) => {
       status: "failed",
       error: err.message
     });
+  }
+});
+
+router.delete('/deleteImage/:id/:index', async (req, res) => {
+  try {
+    const id = req.params.id;                // The document ID
+    const index = req.params.index;          // The index number of the element to delete
+
+                                                 // Find the document by ID
+    const document = await FormData.findById(id);
+
+    if (!document) {
+      return res.status(404).json({ message: 'Document not found' });
+    }
+
+    // Check if the index is valid
+    if (index >= 0 && index < document.adminallimages.length) {
+      // Remove the element from the array
+      document.adminallimages.splice(index, 1);
+      
+      // Save the updated document
+      await document.save();
+
+      res.json({ message: 'Element deleted successfully' });
+    } else {
+      res.status(400).json({ message: 'Invalid index number' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
