@@ -30,6 +30,6 @@ app.use('/formdetails', routerda);
 app.use('/upload',Multi);
 app.use('/uploadquotation', router);
 app.use('/dealerdetails',routerd);
-app.use('/bike',routerv);
+app.use('/bikes',routerv);
 
 module.exports = app;
