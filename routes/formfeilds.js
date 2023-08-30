@@ -598,7 +598,22 @@ const FormData = require('../Models/formschema');
     }
   });
   
+  router.get('/getbike/:id', async (req, res) => {
+    try {
+        const bikeId = req.params.id;
 
+        // Find the bike with the provided ID
+        const bike = await FormData.findById(bikeId);
+
+        if (!bike) {
+            return res.status(404).json({ message: 'Bike not found' });
+        }
+
+        res.status(200).json(bike);
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
 router.get('/getbikes', async (req, res) => {  
 
         try {

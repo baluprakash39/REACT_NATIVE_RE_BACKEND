@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const FormData = require('../Models/sectionschema'); 
+const Section = require('../Models/sectionschema'); 
 
 router.post('/addbike' , async (req,res) => {
     const section = new Section(req.body)
