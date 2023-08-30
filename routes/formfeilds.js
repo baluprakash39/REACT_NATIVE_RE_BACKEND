@@ -614,6 +614,20 @@ const FormData = require('../Models/formschema');
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
+router.get('/getbikes/:section', async (req, res) => {
+  try {
+      const section = req.params.section; // Get the "section" parameter from the URL
+      
+      const bikes = await FormData.find({ section });
+      
+      res.status(200).json({ bikes });
+  } catch (error) {
+      res.status(400).send(error);
+      console.log(error);
+  }
+});
+
 router.get('/getbikes', async (req, res) => {  
 
         try {
