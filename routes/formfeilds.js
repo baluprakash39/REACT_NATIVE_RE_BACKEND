@@ -202,7 +202,7 @@ const FormData = require('../Models/formschema');
 
   router.delete('/warranty/:id/:extendedwarrantyId', async (req, res) => {      
     const formId = req.params.id; // Get the form's document _id from the URL parameter
-    const hypothicationId = req.params.hypothicationId; // Get the seat's _id to delete from the URL parameter
+    const extendedwarrantyId = req.params.extendedwarrantyId; // Get the seat's _id to delete from the URL parameter
   
     try {
       console.log('Deleting extendedwarranty with _id:', extendedwarrantyId);
