@@ -9,7 +9,6 @@ const routerd = require('./routes/dealersform');
 const routerv = require('./routes/sections');
 const fileUpload = require('express-fileupload');
 const Multi = require("./routes/multipleimages");
-const Multis = require("./routes/singleimage");
 const url = 'mongodb+srv://Roshan:Roshan786@cluster0.eoiy197.mongodb.net/test?retryWrites=true&w=majority';
 
 mongoose.set('strictQuery', false);
@@ -29,7 +28,6 @@ app.use(fileUpload());
 
 app.use('/formdetails', routerda);
 app.use('/upload',Multi);
-app.use('/upload',Multis);
 app.use('/uploadquotation', router);
 app.use('/dealerdetails',routerd);
 app.use('/bikes',routerv);

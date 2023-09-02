@@ -227,6 +227,398 @@ const FormData = require('../Models/formschema');
     }
   });
 
+  router.post('/colours', async (req, res) => {
+    const _id = req.query._id; // Get the document _id from the URL query parameters
+  
+    try {
+      const objectToPush = req.body.colours; 
+  
+      console.log('Updating document with _id:', _id);
+      console.log('Object to push:', objectToPush);
+  
+      // Update the document using the $push operator
+      const updatedForm = await FormData.findByIdAndUpdate(
+        _id,
+        { $push: { colours: objectToPush } },
+        { new: true }
+      );
+  
+      console.log('Updated document:', updatedForm);
+  
+      if (!updatedForm) {
+        return res.status(404).json({ message: 'Document not found' });
+      }
+  
+      res.status(200).json(updatedForm);
+    } catch (error) {
+      console.error('Error pushing data to colours array:', error);
+      res.status(500).json({ message: 'Error pushing data to colours array' });
+    }
+  });
+
+  router.delete('/colours/:id/:coloursId', async (req, res) => {      
+    const formId = req.params.id; // Get the form's document _id from the URL parameter
+    const coloursId = req.params.coloursId; // Get the seat's _id to delete from the URL parameter
+  
+    try {
+      console.log('Deleting colours with _id:', coloursId);
+  
+      // Update the document using the $pull operator
+      const updatedForm = await FormData.findByIdAndUpdate(
+        formId,
+        { $pull: { colours: { _id: coloursId } } },
+        { new: true }
+      );
+  
+      console.log('Updated document:', updatedForm);
+  
+      if (!updatedForm) {
+        return res.status(404).json({ message: 'Document not found' });
+      }
+  
+      res.status(200).json(updatedForm);
+    } catch (error) {
+      console.error('Error deleting colours from array:', error);
+      res.status(500).json({ message: 'Error deleting colours from array' });
+    }
+  });
+
+  router.post('/mirrors', async (req, res) => {
+    const _id = req.query._id; // Get the document _id from the URL query parameters
+  
+    try {
+      const objectToPush = req.body.mirrors; 
+  
+      console.log('Updating document with _id:', _id);
+      console.log('Object to push:', objectToPush);
+  
+      // Update the document using the $push operator
+      const updatedForm = await FormData.findByIdAndUpdate(
+        _id,
+        { $push: { mirrors: objectToPush } },
+        { new: true }
+      );
+  
+      console.log('Updated document:', updatedForm);
+  
+      if (!updatedForm) {
+        return res.status(404).json({ message: 'Document not found' });
+      }
+  
+      res.status(200).json(updatedForm);
+    } catch (error) {
+      console.error('Error pushing data to mirrors array:', error);
+      res.status(500).json({ message: 'Error pushing data to mirrors array' });
+    }
+  });
+
+  router.delete('/mirrors/:id/:mirrorsId', async (req, res) => {      
+    const formId = req.params.id; // Get the form's document _id from the URL parameter
+    const mirrorsId = req.params.mirrorsId; // Get the seat's _id to delete from the URL parameter
+  
+    try {
+      console.log('Deleting colours with _id:', mirrorsId);
+  
+      // Update the document using the $pull operator
+      const updatedForm = await FormData.findByIdAndUpdate(
+        formId,
+        { $pull: { mirrors: { _id: mirrorsId } } },
+        { new: true }
+      );
+  
+      console.log('Updated document:', updatedForm);
+  
+      if (!updatedForm) {
+        return res.status(404).json({ message: 'Document not found' });
+      }
+  
+      res.status(200).json(updatedForm);
+    } catch (error) {
+      console.error('Error deleting mirrors from array:', error);
+      res.status(500).json({ message: 'Error deleting mirrors from array' });
+    }
+  });
+
+  router.post('/oil', async (req, res) => {
+    const _id = req.query._id; // Get the document _id from the URL query parameters
+  
+    try {
+      const objectToPush = req.body.oilfillercap; 
+  
+      console.log('Updating document with _id:', _id);
+      console.log('Object to push:', objectToPush);
+  
+      // Update the document using the $push operator
+      const updatedForm = await FormData.findByIdAndUpdate(
+        _id,
+        { $push: { oilfillercap: objectToPush } },
+        { new: true }
+      );
+  
+      console.log('Updated document:', updatedForm);
+  
+      if (!updatedForm) {
+        return res.status(404).json({ message: 'Document not found' });
+      }
+  
+      res.status(200).json(updatedForm);
+    } catch (error) {
+      console.error('Error pushing data to oilfillercap array:', error);
+      res.status(500).json({ message: 'Error pushing data to oilfillercap array' });
+    }
+  });
+
+  router.delete('/oil/:id/:oilfillercapId', async (req, res) => {      
+    const formId = req.params.id; // Get the form's document _id from the URL parameter
+    const oilfillercapId = req.params.oilfillercapId; // Get the seat's _id to delete from the URL parameter
+  
+    try {
+      console.log('Deleting oilfillercap with _id:', oilfillercapId);
+  
+      // Update the document using the $pull operator
+      const updatedForm = await FormData.findByIdAndUpdate(
+        formId,
+        { $pull: { oilfillercap: { _id: oilfillercapId } } },
+        { new: true }
+      );
+  
+      console.log('Updated document:', updatedForm);
+  
+      if (!updatedForm) {
+        return res.status(404).json({ message: 'Document not found' });
+      }
+  
+      res.status(200).json(updatedForm);
+    } catch (error) {
+      console.error('Error deleting oilfillercap from array:', error);
+      res.status(500).json({ message: 'Error deleting oilfillercap from array' });
+    }
+  });
+
+  router.post('/headlight', async (req, res) => {
+    const _id = req.query._id; // Get the document _id from the URL query parameters
+  
+    try {
+      const objectToPush = req.body.headlight; 
+  
+      console.log('Updating document with _id:', _id);
+      console.log('Object to push:', objectToPush);
+  
+      // Update the document using the $push operator
+      const updatedForm = await FormData.findByIdAndUpdate(
+        _id,
+        { $push: { headlight: objectToPush } },
+        { new: true }
+      );
+  
+      console.log('Updated document:', updatedForm);
+  
+      if (!updatedForm) {
+        return res.status(404).json({ message: 'Document not found' });
+      }
+  
+      res.status(200).json(updatedForm);
+    } catch (error) {
+      console.error('Error pushing data to headlight array:', error);
+      res.status(500).json({ message: 'Error pushing data to headlight array' });
+    }
+  });
+
+  router.delete('/headlight/:id/:headlightId', async (req, res) => {      
+    const formId = req.params.id; // Get the form's document _id from the URL parameter
+    const headlightId = req.params.headlightId; // Get the seat's _id to delete from the URL parameter
+  
+    try {
+      console.log('Deleting headlight with _id:', headlightId);
+  
+      // Update the document using the $pull operator
+      const updatedForm = await FormData.findByIdAndUpdate(
+        formId,
+        { $pull: { headlight: { _id: headlightId } } },
+        { new: true }
+      );
+  
+      console.log('Updated document:', updatedForm);
+  
+      if (!updatedForm) {
+        return res.status(404).json({ message: 'Document not found' });
+      }
+  
+      res.status(200).json(updatedForm);
+    } catch (error) {
+      console.error('Error deleting headlight from array:', error);
+      res.status(500).json({ message: 'Error deleting headlight from array' });
+    }
+  });
+
+  router.post('/nav', async (req, res) => {
+    const _id = req.query._id; // Get the document _id from the URL query parameters
+  
+    try {
+      const objectToPush = req.body.navigation; 
+  
+      console.log('Updating document with _id:', _id);
+      console.log('Object to push:', objectToPush);
+  
+      // Update the document using the $push operator
+      const updatedForm = await FormData.findByIdAndUpdate(
+        _id,
+        { $push: { navigation: objectToPush } },
+        { new: true }
+      );
+  
+      console.log('Updated document:', updatedForm);
+  
+      if (!updatedForm) {
+        return res.status(404).json({ message: 'Document not found' });
+      }
+  
+      res.status(200).json(updatedForm);
+    } catch (error) {
+      console.error('Error pushing data to navigation array:', error);
+      res.status(500).json({ message: 'Error pushing data to navigation array' });
+    }
+  });
+
+  router.delete('/nav/:id/:navigationId', async (req, res) => {      
+    const formId = req.params.id; // Get the form's document _id from the URL parameter
+    const headlightId = req.params.headlightId; // Get the seat's _id to delete from the URL parameter
+  
+    try {
+      console.log('Deleting navigation with _id:', navigationId);
+  
+      // Update the document using the $pull operator
+      const updatedForm = await FormData.findByIdAndUpdate(
+        formId,
+        { $pull: { navigation: { _id: navigationId } } },
+        { new: true }
+      );
+  
+      console.log('Updated document:', updatedForm);
+  
+      if (!updatedForm) {
+        return res.status(404).json({ message: 'Document not found' });
+      }
+  
+      res.status(200).json(updatedForm);
+    } catch (error) {
+      console.error('Error deleting navigation from array:', error);
+      res.status(500).json({ message: 'Error deleting navigation from array' });
+    }
+  });
+
+  router.post('/pan', async (req, res) => {
+    const _id = req.query._id; // Get the document _id from the URL query parameters
+  
+    try {
+      const objectToPush = req.body.panniers; 
+  
+      console.log('Updating document with _id:', _id);
+      console.log('Object to push:', objectToPush);
+  
+      // Update the document using the $push operator
+      const updatedForm = await FormData.findByIdAndUpdate(
+        _id,
+        { $push: { panniers: objectToPush } },
+        { new: true }
+      );
+  
+      console.log('Updated document:', updatedForm);
+  
+      if (!updatedForm) {
+        return res.status(404).json({ message: 'Document not found' });
+      }
+  
+      res.status(200).json(updatedForm);
+    } catch (error) {
+      console.error('Error pushing data to panniers array:', error);
+      res.status(500).json({ message: 'Error pushing data to panniers array' });
+    }
+  });
+
+  router.delete('/pan/:id/:panniersId', async (req, res) => {      
+    const formId = req.params.id; // Get the form's document _id from the URL parameter
+    const panniersId = req.params.panniersId; // Get the seat's _id to delete from the URL parameter
+  
+    try {
+      console.log('Deleting panniers with _id:', panniersId);
+  
+      // Update the document using the $pull operator
+      const updatedForm = await FormData.findByIdAndUpdate(
+        formId,
+        { $pull: { panniers: { _id: panniersId } } },
+        { new: true }
+      );
+  
+      console.log('Updated document:', updatedForm);
+  
+      if (!updatedForm) {
+        return res.status(404).json({ message: 'Document not found' });
+      }
+  
+      res.status(200).json(updatedForm);
+    } catch (error) {
+      console.error('Error deleting panniers from array:', error);
+      res.status(500).json({ message: 'Error deleting panniers from array' });
+    }
+  });
+
+  router.post('/foot', async (req, res) => {
+    const _id = req.query._id; // Get the document _id from the URL query parameters
+  
+    try {
+      const objectToPush = req.body.footpegs; 
+  
+      console.log('Updating document with _id:', _id);
+      console.log('Object to push:', objectToPush);
+  
+      // Update the document using the $push operator
+      const updatedForm = await FormData.findByIdAndUpdate(
+        _id,
+        { $push: { footpegs: objectToPush } },
+        { new: true }
+      );
+  
+      console.log('Updated document:', updatedForm);
+  
+      if (!updatedForm) {
+        return res.status(404).json({ message: 'Document not found' });
+      }
+  
+      res.status(200).json(updatedForm);
+    } catch (error) {
+      console.error('Error pushing data to footpegs array:', error);
+      res.status(500).json({ message: 'Error pushing data to footpegs array' });
+    }
+  });
+
+  router.delete('/foot/:id/:footpegsId', async (req, res) => {      
+    const formId = req.params.id; // Get the form's document _id from the URL parameter
+    const footpegsId = req.params.footpegsId; // Get the seat's _id to delete from the URL parameter
+  
+    try {
+      console.log('Deleting footpegs with _id:', footpegsId);
+  
+      // Update the document using the $pull operator
+      const updatedForm = await FormData.findByIdAndUpdate(
+        formId,
+        { $pull: { footpegs: { _id: footpegsId } } },
+        { new: true }
+      );
+  
+      console.log('Updated document:', updatedForm);
+  
+      if (!updatedForm) {
+        return res.status(404).json({ message: 'Document not found' });
+      }
+  
+      res.status(200).json(updatedForm);
+    } catch (error) {
+      console.error('Error deleting footpegs from array:', error);
+      res.status(500).json({ message: 'Error deleting footpegs from array' });
+    }
+  });
+
   router.post('/acc', async (req, res) => {
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
@@ -340,7 +732,6 @@ const FormData = require('../Models/formschema');
     }
   });
   
-
   
   router.post('/seats', async (req, res) => {
     const _id = req.query._id; // Get the document _id from the URL query parameters
