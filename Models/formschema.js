@@ -23,45 +23,45 @@ const formSchema = new mongoose.Schema({
     warrantyvalue:{ type: String}
   }],
  
-  colours: [{
-    colourstext: { type: String },
-    coloursvalue: { type: String }
-  }],
+  // colours: [{
+  //   colourstext: { type: String },
+  //   coloursvalue: { type: String }
+  // }],
 
-  mirrors:[{
-    mirrorstext: { type: String },
-    mirrorsvalue: { type: String }
-  }],
+  // mirrors:[{
+  //   mirrorstext: { type: String },
+  //   mirrorsvalue: { type: String }
+  // }],
 
-  oilfillercap:[{
-    oilfillercaptext: { type: String },
-    oilfillercapvalue: { type: String }
-  }],
+  // oilfillercap:[{
+  //   oilfillercaptext: { type: String },
+  //   oilfillercapvalue: { type: String }
+  // }],
 
-  headlight:[{
-    headlighttext: { type: String },
-    headlightvalue: { type: String }
-  }],
+  // headlight:[{
+  //   headlighttext: { type: String },
+  //   headlightvalue: { type: String }
+  // }],
 
-  navigation:[{
-    navigationtext: { type: String },
-    navigationvalue: { type: String }
-  }],
+  // navigation:[{
+  //   navigationtext: { type: String },
+  //   navigationvalue: { type: String }
+  // }],
 
-  panniers:[{
-    pannierstext: { type: String },
-    panniersvalue: { type: String }
-  }],
+  // panniers:[{
+  //   pannierstext: { type: String },
+  //   panniersvalue: { type: String }
+  // }],
      
-  footpegs:[{
-    footpegstext: { type: String },
-    footpegsvalue: { type: String }
-  }],
+  // footpegs:[{
+  //   footpegstext: { type: String },
+  //   footpegsvalue: { type: String }
+  // }],
 
-  footpegs:[{
-    footpegstext: { type: String },
-    footpegsvalue: { type: String }
-  }],
+  // footpegs:[{
+  //   footpegstext: { type: String },
+  //   footpegsvalue: { type: String }
+  // }],
 
   safetyaccessories: [{
     safetyaccessoriestext: { type: String },
