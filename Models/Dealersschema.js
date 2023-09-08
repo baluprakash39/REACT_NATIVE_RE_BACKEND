@@ -11,7 +11,7 @@ const formSchema = new mongoose.Schema({
     contactnumber:{type:String},
     emailid:{type:String},
     website:{type:String},
-    brandlogoimage:{type:String}
+    image:{type:String}
 })
   
  const Form = mongoose.model('dealersdb', formSchema);   

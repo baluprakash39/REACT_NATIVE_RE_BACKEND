@@ -16,7 +16,8 @@ const FormData = require('../Models/Dealersschema');
         contactnumber,
         emailid,
         website,
-        brandlogoimage
+        // adminallimages
+        image
       } = req.body;
   
       const formData = {
@@ -30,7 +31,8 @@ const FormData = require('../Models/Dealersschema');
         contactnumber,
         emailid,
         website,
-        brandlogoimage
+        // adminallimages
+        image
       };
   
       const createdForm = await FormData.create(formData);

@@ -5,10 +5,10 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const routerda = require('./routes/formfeilds');
 const router = require('./routes/quotationform');
-const routerd = require('./routes/dealersform');
 const routerv = require('./routes/sections');
 const fileUpload = require('express-fileupload');
 const Multi = require("./routes/multipleimages");
+const routers = require("./routes/singleimage");
 const url = 'mongodb+srv://Roshan:Roshan786@cluster0.eoiy197.mongodb.net/test?retryWrites=true&w=majority';
 
 mongoose.set('strictQuery', false);
@@ -28,8 +28,8 @@ app.use(fileUpload());
 
 app.use('/formdetails', routerda);
 app.use('/upload',Multi);
+app.use('/upload', routers);
 app.use('/uploadquotation', router);
-app.use('/dealerdetails',routerd);
 app.use('/bikes',routerv);
 
 module.exports = app;
