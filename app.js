@@ -8,8 +8,9 @@ const router = require('./routes/quotationform');
 const routerv = require('./routes/sections');
 const fileUpload = require('express-fileupload');
 const Multi = require("./routes/multipleimages");
-const routers = require("./routes/singleimage");
+// const routers = require("./routes/singleimage");
 const routerd = require('./routes/dealersform');
+const routerc = require('./routes/careform');
 const url = 'mongodb+srv://Roshan:Roshan786@cluster0.eoiy197.mongodb.net/test?retryWrites=true&w=majority';
 
 mongoose.set('strictQuery', false);
@@ -29,9 +30,10 @@ app.use(fileUpload());
 
 app.use('/formdetails', routerda);
 app.use('/upload',Multi);
-app.use('/upload', routers);
+// app.use('/upload', routers);
 app.use('/uploadquotation', router);
 app.use('/bikes',routerv);
 app.use('/dealerdetails',routerd);
+app.use('/uploadcare', routerc);
 
 module.exports = app;
