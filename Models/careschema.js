@@ -10,7 +10,7 @@ Yes:{type:String},
 No:{type:String},
 fouryears:{type:String},
 fiveyears:{type:String},
-fiveyearsplusRSA:{type:String}
+fiveyearsPlusRSA:{type:String}
 })
 const Form = mongoose.model('Caredb', formSchema);   
 module.exports = Form;
