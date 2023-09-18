@@ -127,10 +127,6 @@ router.post('/single', (req, res) => {
   });
 });
 
-
-module.exports = router
-
-
 router.get('/getdetails', async (req, res) => {  
 
   try {
