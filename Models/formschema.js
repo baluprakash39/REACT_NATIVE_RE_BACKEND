@@ -11,8 +11,8 @@ const formSchema = new mongoose.Schema({
   registration: {type: String},
   roadtax:{type:String},
   insurance: [{
-    insurancetext:{ type: String},
-    insurancevalue:{ type: String}
+    basictype:{ type: String},
+    basicvalue:{ type: String}
   }],
   hypothication: [{
     hypothicationtext:{ type: String},

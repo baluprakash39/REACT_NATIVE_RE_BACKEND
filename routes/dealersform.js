@@ -17,7 +17,7 @@ const FormData = require('../Models/Dealersschema');
         emailid,
         website,
         // adminallimages
-        image
+        // image
       } = req.body;
   
       const formData = {

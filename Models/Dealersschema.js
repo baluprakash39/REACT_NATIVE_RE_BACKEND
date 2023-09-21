@@ -11,7 +11,7 @@ const formSchema = new mongoose.Schema({
     contactnumber:{type:String},
     emailid:{type:String},
     website:{type:String},
-    image:{type:String}
+    // image:{type:String}
     
 })
   
