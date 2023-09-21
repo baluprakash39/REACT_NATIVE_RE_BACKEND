@@ -32,7 +32,7 @@ const FormData = require('../Models/Dealersschema');
         emailid,
         website,
         // adminallimages
-        image
+        // image
       };
   
       const createdForm = await FormData.create(formData);
