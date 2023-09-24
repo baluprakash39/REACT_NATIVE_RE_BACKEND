@@ -75,144 +75,69 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.post('/insurance', async (req, res) => {
-    const _id = req.query._id; // Get the document _id from the URL query parameters
-  
-    try {
-      const objectToPush = req.body.insurance; 
-  
-      console.log('Updating document with _id:', _id);
-      console.log('Object to push:', objectToPush);
-  
-      // Update the document using the $push operator
-      const updatedForm = await FormData.findByIdAndUpdate(
-        _id,
-        { $push: { insurance: objectToPush } },
-        { new: true }
-      );
-  
-      console.log('Updated document:', updatedForm);
-  
-      if (!updatedForm) {
-        return res.status(404).json({ message: 'Document not found' });
-      }
-  
-      res.status(200).json(updatedForm);
-    } catch (error) {
-      console.error('Error pushing data to insurance array:', error);
-      res.status(500).json({ message: 'Error pushing data to insurance array' });
-    }
-  });
 
-  router.delete('/insurance/:id/:insuranceId', async (req, res) => {      
-    const formId = req.params.id; // Get the form's document _id from the URL parameter
-    const insuranceId = req.params.insuranceId; // Get the seat's _id to delete from the URL parameter
-  
-    try {
-      console.log('Deleting insurance with _id:', insuranceId);
-  
-      // Update the document using the $pull operator
-      const updatedForm = await FormData.findByIdAndUpdate(
-        formId,
-        { $pull: { insurance: { _id: insuranceId } } },
-        { new: true }
-      );
-  
-      console.log('Updated document:', updatedForm);
-  
-      if (!updatedForm) {
-        return res.status(404).json({ message: 'Document not found' });
-      }
-  
-      res.status(200).json(updatedForm);
-    } catch (error) {
-      console.error('Error deleting insurance from array:', error);
-      res.status(500).json({ message: 'Error deleting insurance from array' });
-    }
-  });
 
-  router.post('/hypo', async (req, res) => {
-    const _id = req.query._id; // Get the document _id from the URL query parameters
-  
-    try {
-      const objectToPush = req.body.hypothication; 
-  
-      console.log('Updating document with _id:', _id);
-      console.log('Object to push:', objectToPush);
-  
-      // Update the document using the $push operator
-      const updatedForm = await FormData.findByIdAndUpdate(
-        _id,
-        { $push: { hypothication: objectToPush } },
-        { new: true }
-      );
-  
-      console.log('Updated document:', updatedForm);
-  
-      if (!updatedForm) {
-        return res.status(404).json({ message: 'Document not found' });
-      }
-  
-      res.status(200).json(updatedForm);
-    } catch (error) {
-      console.error('Error pushing data to hypothication array:', error);
-      res.status(500).json({ message: 'Error pushing data to hypothication array' });
-    }
-  });
 
-  router.delete('/hypo/:id/:hypothicationId', async (req, res) => {      
-    const formId = req.params.id; // Get the form's document _id from the URL parameter
-    const hypothicationId = req.params.hypothicationId; // Get the seat's _id to delete from the URL parameter
-  
-    try {
-      console.log('Deleting hypothication with _id:', hypothicationId);
-  
-      // Update the document using the $pull operator
-      const updatedForm = await FormData.findByIdAndUpdate(
-        formId,
-        { $pull: { hypothication: { _id: hypothicationId } } },
-        { new: true }
-      );
-  
-      console.log('Updated document:', updatedForm);
-  
-      if (!updatedForm) {
-        return res.status(404).json({ message: 'Document not found' });
-      }
-  
-      res.status(200).json(updatedForm);
-    } catch (error) {
-      console.error('Error deleting hypothication from array:', error);
-      res.status(500).json({ message: 'Error deleting hypothication from array' });
-    }
-  });
 
-  router.post('/warranty', async (req, res) => {
-    const _id = req.query._id; // Get the document _id from the URL query parameters
-  
+  router.post('/uploadcare/:id', async (req, res) => {
     try {
-      const objectToPush = req.body.extendedwarranty; 
+      const {
+        Basic,
+        Nildip,
+        Ep,
+        RTI,
+        Yes,
+        No,
+        fouryears,
+        fiveyears,
+        fiveplusRSAyears,
+      } = req.body;
+      const formData = {
+        insurance: [
+          {
+            Basic,
+            Nildip,
+            Ep,
+            RTI,
+          },
+        ],
+        hypothication: [
+          {
+            Yes,
+            No,
+          },
+        ],
+        extendedwarranty: [
+          {
+            fouryears,
+            fiveyears,
+            fiveplusRSAyears,
+          },
+        ],
+      };
+      const query = { "_id": req.params.id }; // Access id from URL params
+      const update = { $set: formData };
   
-      console.log('Updating document with _id:', _id);
-      console.log('Object to push:', objectToPush);
+      const updatedDoc = await FormData.findOneAndUpdate(query, update, { new: true });
   
-      // Update the document using the $push operator
-      const updatedForm = await FormData.findByIdAndUpdate(
-        _id,
-        { $push: { extendedwarranty: objectToPush } },
-        { new: true }
-      );
-  
-      console.log('Updated document:', updatedForm);
-  
-      if (!updatedForm) {
-        return res.status(404).json({ message: 'Document not found' });
+      if (!updatedDoc) {
+        return res.status(404).json({
+          message: "Document not found",
+          status: "error",
+        });
       }
   
-      res.status(200).json(updatedForm);
+      console.log("Updated document:", updatedDoc);
+      res.status(200).json({
+        message: updatedDoc,
+        status: "success",
+      });
     } catch (error) {
-      console.error('Error pushing data to extendedwarranty array:', error);
-      res.status(500).json({ message: 'Error pushing data to extendedwarranty array' });
+      console.error('Error updating document:', error);
+      res.status(500).json({
+        message: "Internal server error",
+        status: "error",
+      });
     }
   });
 
