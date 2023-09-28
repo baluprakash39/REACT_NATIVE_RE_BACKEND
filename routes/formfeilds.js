@@ -92,33 +92,30 @@ const FormData = require('../Models/formschema');
         fiveyears,
         fiveplusRSAyears,
       } = req.body;
-      const formData = {
-        insurance: [
-          {
-            Basic,
-            Nildip,
-            Ep,
-            RTI,
-          },
-        ],
-        hypothication: [
-          {
-            Yes,
-            No,
-          },
-        ],
-        extendedwarranty: [
-          {
-            fouryears,
-            fiveyears,
-            fiveplusRSAyears,
-          },
-        ],
-      };
-      const query = { "_id": req.params.id }; // Access id from URL params
-      const update = { $set: formData };
   
-      const updatedDoc = await FormData.findOneAndUpdate(query, update, { new: true });
+      const query = { "_id": req.params.id }; // Access id from URL params
+  
+      // Construct the update object to update specific fields in arrays
+      const update = {
+        $set: {
+          "insurance.0.Basic": Basic,
+          "insurance.0.Nildip": Nildip,
+          "insurance.0.Ep": Ep,
+          "insurance.0.RTI": RTI,
+          "hypothication.0.Yes": Yes,
+          "hypothication.0.No": No,
+          "extendedwarranty.0.fouryears": fouryears,
+          "extendedwarranty.0.fiveyears": fiveyears,
+          "extendedwarranty.0.fiveplusRSAyears": fiveplusRSAyears,
+        }
+      };
+  
+      // Push the object to the 'colours' array within the document
+      const updatedDoc = await FormData.findOneAndUpdate(
+        query,
+        update,
+        { new: true }
+      );
   
       if (!updatedDoc) {
         return res.status(404).json({
