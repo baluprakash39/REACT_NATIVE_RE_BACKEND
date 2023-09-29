@@ -138,32 +138,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.delete('/warranty/:id/:extendedwarrantyId', async (req, res) => {      
-    const formId = req.params.id; // Get the form's document _id from the URL parameter
-    const extendedwarrantyId = req.params.extendedwarrantyId; // Get the seat's _id to delete from the URL parameter
-  
-    try {
-      console.log('Deleting extendedwarranty with _id:', extendedwarrantyId);
-  
-      // Update the document using the $pull operator
-      const updatedForm = await FormData.findByIdAndUpdate(
-        formId,
-        { $pull: { extendedwarranty: { _id: extendedwarrantyId } } },
-        { new: true }
-      );
-  
-      console.log('Updated document:', updatedForm);
-  
-      if (!updatedForm) {
-        return res.status(404).json({ message: 'Document not found' });
-      }
-  
-      res.status(200).json(updatedForm);
-    } catch (error) {
-      console.error('Error deleting extendedwarranty from array:', error);
-      res.status(500).json({ message: 'Error deleting extendedwarranty from array' });
-    }
-  });
+
 
   router.post('/colours', async (req, res) => {
     const _id = req.query._id; // Get the document _id from the URL query parameters

@@ -11,16 +11,20 @@ const formSchema = new mongoose.Schema({
   registration: {type: String},
   roadtax:{type:String},
   insurance: [{
-    basictype:{ type: String},
-    basicvalue:{ type: String}
-  }],
+    Basic:{ type: String},
+    Nildip:{type: String},
+    Ep:{type: String},
+    RTI:{type: String},
+  }
+],
   hypothication: [{
-    hypothicationtext:{ type: String},
-    hypothicationvalue:{ type: String}
+    Yes:{ type: String},
+    No:{ type: String},
   }],
   extendedwarranty:[{
-    warrantytext:{ type: String},
-    warrantyvalue:{ type: String}
+    fouryears:{ type: String},
+    fiveyears:{ type: String},
+    fiveplusRSAyears:{ type: String},
   }],
  
   colours: [{
