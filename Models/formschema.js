@@ -6,7 +6,7 @@ const formSchema = new mongoose.Schema({
   model: { type: String},
   EngineCC:{type: String},
   vehiclecolor:{ type: String},
-  adminallimages:{type:Array},
+  adminallimage:{type:String},
   exShowroomPrice: {type: String},
   registration: {type: String},
   roadtax:{type:String},

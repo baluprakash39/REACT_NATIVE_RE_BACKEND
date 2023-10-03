@@ -24,54 +24,106 @@ router.get('/images', async (req,res) =>{
   } 
   })
 
+// router.post('/upload/:id', async (req, res) => {
+//   try {
+//     if (!req.files || !req.files.adminallimages) {
+//       return res.status(400).json({ message: 'No files were uploaded.' });
+//     }
+
+//     const files = Array.isArray(req.files.adminallimages) ? req.files.adminallimages : [req.files.adminallimages];
+
+//     // Filter out empty or undefined files
+//     const validFiles = files.filter((file) => file && file.data);
+
+//     if (validFiles.length === 0) {
+//       return res.status(400).json({ message: 'No valid files were uploaded.' });
+//     }
+
+//     const uploadPromises = validFiles.map((file) => {
+//       const uniqueKey = Date.now().toString(); // Use a unique key for each file
+//       const fileExtension = file.name.split('.').pop();
+//       const fileName = `${uniqueKey}.${fileExtension}`;
+
+//       const params = {
+//         Bucket: 'laxmi-bucket',
+//         Key: fileName,
+//         Body: file.data,
+//         ACL: 'public-read', // Set the ACL as per your requirements
+//       };
+
+//       return s3.upload(params).promise();
+//     });
+
+//     const results = await Promise.all(uploadPromises);
+//     const fileUrls = results.map((result) => result.Location);
+
+//     const query = { "_id": req.params.id };
+//     const Rest = {
+//       $push: {
+//         "adminallimages": {
+//           $each: fileUrls
+//         }
+//       }
+//     };
+
+//     const updatedDoc = await FormData.findOneAndUpdate(query, Rest).select().exec();
+
+//     if (updatedDoc) {
+//       return res.status(200).json({
+//         data: updatedDoc,
+//         message: "Images uploaded successfully",
+//         status: "success"
+//       });
+//     } else {
+//       return res.status(400).json({
+//         message: "No matching document found for the given ID",
+//         status: "no match"
+//       });
+//     }
+//   } catch (err) {
+//     return res.status(400).json({
+//       message: "Failed to upload images or update document",
+//       status: "failed",
+//       error: err.message
+//     });
+//   }
+// });
+
 router.post('/upload/:id', async (req, res) => {
   try {
-    if (!req.files || !req.files.adminallimages) {
-      return res.status(400).json({ message: 'No files were uploaded.' });
+    if (!req.files || !req.files.adminallimage) {
+      return res.status(400).json({ message: 'No file was uploaded.' });
     }
 
-    const files = Array.isArray(req.files.adminallimages) ? req.files.adminallimages : [req.files.adminallimages];
+    const file = req.files.adminallimage;
 
-    // Filter out empty or undefined files
-    const validFiles = files.filter((file) => file && file.data);
-
-    if (validFiles.length === 0) {
-      return res.status(400).json({ message: 'No valid files were uploaded.' });
+    if (!file || !file.data) {
+      return res.status(400).json({ message: 'No valid file was uploaded.' });
     }
 
-    const uploadPromises = validFiles.map((file) => {
-      const uniqueKey = Date.now().toString(); // Use a unique key for each file
-      const fileExtension = file.name.split('.').pop();
-      const fileName = `${uniqueKey}.${fileExtension}`;
+    const uniqueKey = Date.now().toString();
+    const fileExtension = file.name.split('.').pop();
+    const fileName = `${uniqueKey}.${fileExtension}`;
 
-      const params = {
-        Bucket: 'laxmi-bucket',
-        Key: fileName,
-        Body: file.data,
-        ACL: 'public-read', // Set the ACL as per your requirements
-      };
-
-      return s3.upload(params).promise();
-    });
-
-    const results = await Promise.all(uploadPromises);
-    const fileUrls = results.map((result) => result.Location);
-
-    const query = { "_id": req.params.id };
-    const Rest = {
-      $push: {
-        "adminallimages": {
-          $each: fileUrls
-        }
-      }
+    const params = {
+      Bucket: 'laxmi-bucket',
+      Key: fileName,
+      Body: file.data,
+      ACL: 'public-read',
     };
 
-    const updatedDoc = await FormData.findOneAndUpdate(query, Rest).select().exec();
+    const uploadResult = await s3.upload(params).promise();
+    const fileUrl = uploadResult.Location;
+
+    const query = { "_id": req.params.id };
+    const update = { "adminallimage": fileUrl }; // Change to adminallimage
+
+    const updatedDoc = await FormData.findOneAndUpdate(query, update, { new: true }).exec();
 
     if (updatedDoc) {
       return res.status(200).json({
         data: updatedDoc,
-        message: "Images uploaded successfully",
+        message: "Image uploaded successfully",
         status: "success"
       });
     } else {
@@ -82,13 +134,12 @@ router.post('/upload/:id', async (req, res) => {
     }
   } catch (err) {
     return res.status(400).json({
-      message: "Failed to upload images or update document",
+      message: "Failed to upload image or update document",
       status: "failed",
       error: err.message
     });
   }
 });
-
 
 router.delete('/deleteImage/:id/:index', async (req, res) => {
   try {
