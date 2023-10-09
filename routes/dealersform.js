@@ -15,7 +15,7 @@ router.post('/dealerdetails', async (req, res) => {
       country,
       contactnumber,
       gstin,
-      emailid,
+      dealeremailid,
       website,
     } = req.body;
 
@@ -32,7 +32,7 @@ router.post('/dealerdetails', async (req, res) => {
       existingFormData.state = state;
       existingFormData.country = country;
       existingFormData.contactnumber = contactnumber;
-      existingFormData.emailid = emailid;
+      existingFormData.dealeremailid = dealeremailid;
       existingFormData.website = website;
 
       const updatedForm = await existingFormData.save();
@@ -49,7 +49,7 @@ router.post('/dealerdetails', async (req, res) => {
         country,
         contactnumber,
         gstin,
-        emailid,
+        dealeremailid,
         website,
       });
 

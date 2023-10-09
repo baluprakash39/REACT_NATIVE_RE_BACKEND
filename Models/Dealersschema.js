@@ -10,7 +10,7 @@ const formSchema = new mongoose.Schema({
     country:{type:String},
     contactnumber:{type:String},
     gstin:{type:String},
-    emailid:{type:String},
+    dealeremailid:{type:String},
     website:{type:String},
     // image:{type:String}
     
