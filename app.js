@@ -10,6 +10,7 @@ const fileUpload = require('express-fileupload');
 const Multi = require("./routes/multipleimages");
 const routers = require("./routes/singleimage");
 const routerd = require('./routes/dealersform');
+const routerr = require('./routes/registration');
 // const routerc = require('./routes/careform');
 const url = 'mongodb+srv://Roshan:Roshan786@cluster0.eoiy197.mongodb.net/test?retryWrites=true&w=majority';
 
@@ -34,6 +35,7 @@ app.use('/upload', routers);
 app.use('/uploadquotation', router);
 app.use('/bikes',routerv);
 app.use('/dealerdetails',routerd);
+app.use('/registerPhoneNumber',routerr);
 // app.use('/uploadcare', routerc);
 
 module.exports = app;
