@@ -28,14 +28,22 @@ const RegisteredPhoneNumber = require('../Models/registrationschema');
   });
   
   // POST endpoint to register a new phone number
-  router.post('/registerPhoneNumber', (req, res) => {
+  router.post('/registerPhoneNumber', async (req, res) => {
     const { phoneNumber, name, email, companyname, deviceId } = req.body;
   
     if (!phoneNumber) {
       return res.status(400).json({ message: 'Phone number is required in the request body.' });
     }
   
-    // Create a new instance of RegisteredPhoneNumber with all the fields
+    // Check if a record with the same phone number and device ID already exists
+    const existingPhoneNumber = await RegisteredPhoneNumber.findOne({ phoneNumber, deviceId });
+  
+    if (existingPhoneNumber) {
+      // A record with the same phone number and device ID already exists
+      return res.status(400).json({ message: 'Phone number is already registered.' });
+    }
+  
+    // new record creation
     const registeredPhoneNumber = new RegisteredPhoneNumber({
       phoneNumber,
       name,
