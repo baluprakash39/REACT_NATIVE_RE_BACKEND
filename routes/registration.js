@@ -37,7 +37,7 @@ const RegisteredPhoneNumber = require('../Models/registrationschema');
       RegisteredPhoneNumber.findOne({ phoneNumber, deviceId })
         .then((result) => {
           if (result) {
-            res.json({ success: true, status: 'allowed' });
+            res.json({ success: true, status: 'allowed',data:result });
           } else {
             res.json({ success: true, status: 'not allowed' });
           }
