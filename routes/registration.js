@@ -4,7 +4,29 @@ const router = express.Router();
 const RegisteredPhoneNumber = require('../Models/registrationschema'); 
 
   // GET endpoint to retrieve all registered phone numbers based on a specific phone number query parameter
-  router.get('/allRegisteredPhoneNumbers', async (req, res) => {
+  // router.get('/allRegisteredPhoneNumbers', async (req, res) => {
+  //   try {
+  //     const { phoneNumber, deviceId } = req.query;
+  
+  //     if (!phoneNumber || !deviceId) {
+  //       return res.status(400).json({ message: 'Phone number and deviceId are required in the query parameters.' });
+  //     }
+  
+  //     const registeredPhoneNumbers = await RegisteredPhoneNumber.find({ phoneNumber, deviceId });
+  
+  //     if (registeredPhoneNumbers.length > 0) {
+  //       // Create an array of objects with phoneNumber and deviceId
+  //       const phoneNumbers = registeredPhoneNumbers.map((entry) => ({ phoneNumber: entry.phoneNumber, deviceId: entry.deviceId }));
+  //       res.json({ success: true, phoneNumbers });
+  //     } else {
+  //       res.json({ success: false, message: 'Phone number not found' });
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //     res.status(500).json({ message: 'Internal server error' });
+  //   }
+  // });
+  router.get('/checkPhoneNumberAndDevice', async (req, res) => {
     try {
       const { phoneNumber, deviceId } = req.query;
   
@@ -12,21 +34,23 @@ const RegisteredPhoneNumber = require('../Models/registrationschema');
         return res.status(400).json({ message: 'Phone number and deviceId are required in the query parameters.' });
       }
   
-      const registeredPhoneNumbers = await RegisteredPhoneNumber.find({ phoneNumber, deviceId });
-  
-      if (registeredPhoneNumbers.length > 0) {
-        // Create an array of objects with phoneNumber and deviceId
-        const phoneNumbers = registeredPhoneNumbers.map((entry) => ({ phoneNumber: entry.phoneNumber, deviceId: entry.deviceId }));
-        res.json({ success: true, phoneNumbers });
-      } else {
-        res.json({ success: false, message: 'Phone number not found' });
-      }
+      RegisteredPhoneNumber.findOne({ phoneNumber, deviceId })
+        .then((result) => {
+          if (result) {
+            res.json({ success: true, status: 'allowed' });
+          } else {
+            res.json({ success: true, status: 'not allowed' });
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          res.status(500).json({ message: 'Internal server error' });
+        });
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Internal server error' });
     }
   });
-  
   // POST endpoint to register a new phone number
   router.post('/registerPhoneNumber', async (req, res) => {
     const { phoneNumber, name, email, companyname, deviceId } = req.body;
@@ -66,6 +90,42 @@ const RegisteredPhoneNumber = require('../Models/registrationschema');
       });
   });
   
-  
+  router.post('/getsignup', (req, res, next)=>{
+
+       
+    var mobileNo=req.body.phoneNumber;
+     console.log(mobileNo)
+
+     RegisteredPhoneNumber.findOne({phoneNumber:mobileNo}).select().exec().then( doc => {
+   
+     var user  = req.body.phoneNumber;
+     if(doc == null || doc == undefined || doc ==''){
+       res.status(400).json({ 
+           Authentication: 'User not exist',
+           message:'failed'
+       })
+     }
+   
+     else if(user == doc.phoneNumber){
+       res.status(200).json({Authentication: doc._id,
+                              message: "Success",
+                              adminaccept:doc.adminaccept,
+                             userProfile:doc})
+     }
+     else
+     { 
+         res.status(400).json({ 
+             Authentication: 'Failed to login ',
+             message:'error'
+                             });
+ 
+     }
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json({error: err});
+    });
+ 
+ 
+ });
 
 module.exports = router;
