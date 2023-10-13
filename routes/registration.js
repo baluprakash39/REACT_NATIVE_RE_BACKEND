@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const jwtMiddleware = require('../jwtMiddleware');
 
 const RegisteredPhoneNumber = require('../Models/registrationschema'); 
 
@@ -36,8 +37,10 @@ const RegisteredPhoneNumber = require('../Models/registrationschema');
   
       RegisteredPhoneNumber.findOne({ phoneNumber, deviceId })
         .then((result) => {
+          const token = jwtMiddleware.generateToken(phoneNumber);
+          const refreshToken = jwtMiddleware.generateRefreshToken(phoneNumber);
           if (result) {
-            res.json({ success: true, status: 'allowed',data:result });
+            res.json({ success: true, status: 'allowed',data:result, token, refreshToken });
           } else {
             res.json({ success: true, status: 'not allowed' });
           }
@@ -51,7 +54,7 @@ const RegisteredPhoneNumber = require('../Models/registrationschema');
       res.status(500).json({ message: 'Internal server error' });
     }
   });
-  // POST endpoint to register a new phone number
+  // POST endpoint to register a new phone numberw
   router.post('/registerPhoneNumber', async (req, res) => {
     const { phoneNumber, name, email, companyname, deviceId } = req.body;
   
@@ -90,14 +93,13 @@ const RegisteredPhoneNumber = require('../Models/registrationschema');
       });
   });
   
-  router.post('/getsignup', (req, res, next)=>{
+ router.post('/getsignup', (req, res, next)=>{
 
        
     var mobileNo=req.body.phoneNumber;
      console.log(mobileNo)
 
      RegisteredPhoneNumber.findOne({phoneNumber:mobileNo}).select().exec().then( doc => {
-   
      var user  = req.body.phoneNumber;
      if(doc == null || doc == undefined || doc ==''){
        res.status(400).json({ 
@@ -110,7 +112,8 @@ const RegisteredPhoneNumber = require('../Models/registrationschema');
        res.status(200).json({Authentication: doc._id,
                               message: "Success",
                               adminaccept:doc.adminaccept,
-                             userProfile:doc})
+                             userProfile:doc,
+                           })
      }
      else
      { 
@@ -127,5 +130,12 @@ const RegisteredPhoneNumber = require('../Models/registrationschema');
  
  
  });
+ 
+ router.post('/refresh-token', (req, res) => {
+  const refreshTokenValue = req.body.refreshToken;
+
+  // Verify the refresh token
+  jwtMiddleware.refreshToken(req, res);
+});
 
 module.exports = router;

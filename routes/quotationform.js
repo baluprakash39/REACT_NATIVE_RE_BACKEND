@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-
+const jwtMiddleware = require('../jwtMiddleware');
 const FormData = require('../Models/quotationschema'); 
 
-router.get('/getdetails', async (req, res) => {  
+router.get('/getdetails', jwtMiddleware.verifyToken, async (req, res) => {  
 
     try {
         const user = await FormData.find({})
@@ -15,7 +15,7 @@ router.get('/getdetails', async (req, res) => {
     }
 });
 
-router.post('/uploadquotation', async (req, res) => {
+router.post('/uploadquotation', jwtMiddleware.verifyToken, async (req, res) => {
     try {
       const {
         customername,
@@ -66,7 +66,7 @@ router.post('/uploadquotation', async (req, res) => {
       res.status(500).json({ message: 'Error creating form' });
     }
   });
-  router.post('/quoteinsurance', async (req, res) => {
+  router.post('/quoteinsurance', jwtMiddleware.verifyToken, async (req, res) => {
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
     try {
@@ -94,7 +94,7 @@ router.post('/uploadquotation', async (req, res) => {
       res.status(500).json({ message: 'Error pushing data to insurance array' });
     }
   });
-  router.post('/quotationhypo', async (req, res) => {
+  router.post('/quotationhypo', jwtMiddleware.verifyToken, async (req, res) => {
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
     try {
@@ -122,7 +122,7 @@ router.post('/uploadquotation', async (req, res) => {
       res.status(500).json({ message: 'Error pushing data to hypothication array' });
     }
   });
-  router.post('/quowarranty', async (req, res) => {
+  router.post('/quowarranty', jwtMiddleware.verifyToken, async (req, res) => {
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
     try {

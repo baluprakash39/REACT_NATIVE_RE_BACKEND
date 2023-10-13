@@ -1,6 +1,7 @@
 const express = require('express');
 const AWS = require('aws-sdk');
 const router = express.Router();
+const jwtMiddleware = require('../jwtMiddleware');
 const FormData = require('../Models/formschema'); 
 const config = {
   accessKeyId: 'AKIAVMRPENK3IVSXIVXR',
@@ -13,7 +14,7 @@ const s3 = new AWS.S3({
   region: config.region,
 });
 
-router.get('/images', async (req,res) =>{ 
+router.get('/images', jwtMiddleware.verifyToken, async (req,res) =>{ 
   try{    
       const images = await FormData.find({})  
       res.status(200).json({
@@ -89,7 +90,7 @@ router.get('/images', async (req,res) =>{
 //   }
 // });
 
-router.post('/upload/:id', async (req, res) => {
+router.post('/upload/:id', jwtMiddleware.verifyToken, async (req, res) => {
   try {
     if (!req.files || !req.files.adminallimage) {
       return res.status(400).json({ message: 'No file was uploaded.' });
@@ -141,7 +142,7 @@ router.post('/upload/:id', async (req, res) => {
   }
 });
 
-router.delete('/deleteImage/:id/:index', async (req, res) => {
+router.delete('/deleteImage/:id/:index', jwtMiddleware.verifyToken, async (req, res) => {
   try {
     const id = req.params.id;                // The document ID
     const index = req.params.index;          // The index number of the element to delete

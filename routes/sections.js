@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const jwtMiddleware = require('../jwtMiddleware');
 
 const Section = require('../Models/sectionschema'); 
 
-router.post('/addbike' , async (req,res) => {
+router.post('/addbike', jwtMiddleware.verifyToken, async (req,res) => {
     const section = new Section(req.body)
     section.save().then (result => {
         res.status (201).json({
@@ -17,7 +18,7 @@ router.post('/addbike' , async (req,res) => {
     
 });
 
-router.get('/bikes', async (req,res) =>{ 
+router.get('/bikes', jwtMiddleware.verifyToken, async (req,res) =>{ 
     try{         
         const sections = await Section.find({})  // async makes a function return a Promise
                                                  //await makes a function wait for a Promise
@@ -30,9 +31,7 @@ router.get('/bikes', async (req,res) =>{
     } 
     })
  
-  
-
-    router.put('/updatebike/:id', async (req, res) => {
+    router.put('/updatebike/:id', jwtMiddleware.verifyToken, async (req, res) => {
         const sectionId = req.params.id;
         const updatedSectionName = req.body.Sectionname;
       
@@ -54,7 +53,7 @@ router.get('/bikes', async (req,res) =>{
           res.status(400).json({ Error: error });
         }
       });
-      router.delete('/deletebike/:id', async (req, res) => {
+      router.delete('/deletebike/:id', jwtMiddleware.verifyToken, async (req, res) => {
         const sectionId = req.params.id;
       
         try {

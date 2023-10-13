@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const jwtMiddleware = require('../jwtMiddleware');
 
 const FormData = require('../Models/formschema'); 
 
-  router.post('/uploadbikes', async (req, res) => {
+  router.post('/uploadbikes',jwtMiddleware.verifyToken, async (req, res) => {
     try {
       const {
         section,
@@ -75,11 +76,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-
-
-
-
-  router.post('/uploadcare/:id', async (req, res) => {
+  router.post('/uploadcare/:id',jwtMiddleware.verifyToken, async (req, res) => {
     try {
       const {
         Basic,
@@ -138,9 +135,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-
-
-  router.post('/colours', async (req, res) => {
+  router.post('/colours', jwtMiddleware.verifyToken, async (req, res) => {
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
     try {
@@ -169,7 +164,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.delete('/colours/:id/:coloursId', async (req, res) => {      
+  router.delete('/colours/:id/:coloursId',jwtMiddleware.verifyToken, async (req, res) => {      
     const formId = req.params.id; // Get the form's document _id from the URL parameter
     const coloursId = req.params.coloursId; // Get the seat's _id to delete from the URL parameter
   
@@ -252,7 +247,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.post('/oil', async (req, res) => {
+  router.post('/oil', jwtMiddleware.verifyToken, async (req, res) => {
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
     try {
@@ -281,7 +276,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.delete('/oil/:id/:oilfillercapId', async (req, res) => {      
+  router.delete('/oil/:id/:oilfillercapId', jwtMiddleware.verifyToken, async (req, res) => {      
     const formId = req.params.id; // Get the form's document _id from the URL parameter
     const oilfillercapId = req.params.oilfillercapId; // Get the seat's _id to delete from the URL parameter
   
@@ -308,7 +303,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.post('/headlight', async (req, res) => {
+  router.post('/headlight', jwtMiddleware.verifyToken, async (req, res) => {
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
     try {
@@ -337,7 +332,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.delete('/headlight/:id/:headlightId', async (req, res) => {      
+  router.delete('/headlight/:id/:headlightId', jwtMiddleware.verifyToken, async (req, res) => {      
     const formId = req.params.id; // Get the form's document _id from the URL parameter
     const headlightId = req.params.headlightId; // Get the seat's _id to delete from the URL parameter
   
@@ -364,7 +359,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.post('/nav', async (req, res) => {
+  router.post('/nav', jwtMiddleware.verifyToken, async (req, res) => {
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
     try {
@@ -393,7 +388,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.delete('/nav/:id/:navigationId', async (req, res) => {      
+  router.delete('/nav/:id/:navigationId', jwtMiddleware.verifyToken, async (req, res) => {      
     const formId = req.params.id; // Get the form's document _id from the URL parameter
     const headlightId = req.params.headlightId; // Get the seat's _id to delete from the URL parameter
   
@@ -420,7 +415,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.post('/pan', async (req, res) => {
+  router.post('/pan', jwtMiddleware.verifyToken, async (req, res) => {
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
     try {
@@ -449,7 +444,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.delete('/pan/:id/:panniersId', async (req, res) => {      
+  router.delete('/pan/:id/:panniersId', jwtMiddleware.verifyToken, async (req, res) => {      
     const formId = req.params.id; // Get the form's document _id from the URL parameter
     const panniersId = req.params.panniersId; // Get the seat's _id to delete from the URL parameter
   
@@ -476,7 +471,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.post('/foot', async (req, res) => {
+  router.post('/foot', jwtMiddleware.verifyToken, async (req, res) => {
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
     try {
@@ -505,7 +500,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.delete('/foot/:id/:footpegsId', async (req, res) => {      
+  router.delete('/foot/:id/:footpegsId', jwtMiddleware.verifyToken, async (req, res) => {      
     const formId = req.params.id; // Get the form's document _id from the URL parameter
     const footpegsId = req.params.footpegsId; // Get the seat's _id to delete from the URL parameter
   
@@ -532,7 +527,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.post('/acc', async (req, res) => {
+  router.post('/acc', jwtMiddleware.verifyToken, async (req, res) => {
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
     try {
@@ -561,7 +556,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.delete('/acc/:id/:safetyaccessoriesId', async (req, res) => {      
+  router.delete('/acc/:id/:safetyaccessoriesId', jwtMiddleware.verifyToken, async (req, res) => {      
   const formId = req.params.id; // Get the form's document _id from the URL parameter
   const safetyaccessoriesId = req.params.safetyaccessoriesId; // Get the seat's _id to delete from the URL parameter
 
@@ -589,7 +584,7 @@ const FormData = require('../Models/formschema');
 });
 
 
-  router.post('/wind', async (req, res) => {
+  router.post('/wind', jwtMiddleware.verifyToken, async (req, res) => {
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
     try {
@@ -618,7 +613,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.delete('/wind/:id/:windshieldId', async (req, res) => {
+  router.delete('/wind/:id/:windshieldId',  jwtMiddleware.verifyToken, async (req, res) => {
     const formId = req.params.id; // Get the form's document _id from the URL parameter
     const windshieldId = req.params.windshieldId; // Get the windshield's _id to delete from the URL parameter
   
@@ -646,7 +641,7 @@ const FormData = require('../Models/formschema');
   });
   
   
-  router.post('/seats', async (req, res) => {
+  router.post('/seats', jwtMiddleware.verifyToken, async (req, res) => {
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
     try {
@@ -675,7 +670,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.delete('/seats/:id/:seatId', async (req, res) => {
+  router.delete('/seats/:id/:seatId', jwtMiddleware.verifyToken, async (req, res) => {
     const formId = req.params.id; // Get the form's document _id from the URL parameter
     const seatId = req.params.seatId; // Get the seat's _id to delete from the URL parameter
   
@@ -702,7 +697,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.post('/back', async (req, res) => {       
+  router.post('/back', jwtMiddleware.verifyToken, async (req, res) => {       
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
     try {
@@ -731,7 +726,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.delete('/back/:id/:backrestId', async (req, res) => {
+  router.delete('/back/:id/:backrestId', jwtMiddleware.verifyToken, async (req, res) => {
     const formId = req.params.id; // Get the form's document _id from the URL parameter
     const backrestId = req.params.backrestId; // Get the backrest's _id to delete from the URL parameter
   
@@ -759,7 +754,7 @@ const FormData = require('../Models/formschema');
   });
   
   
-  router.post('/storage', async (req, res) => {           
+  router.post('/storage', jwtMiddleware.verifyToken, async (req, res) => {           
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
     try {
@@ -788,7 +783,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.delete('/storage/:id/:storageaccessoriesId', async (req, res) => {
+  router.delete('/storage/:id/:storageaccessoriesId', jwtMiddleware.verifyToken, async (req, res) => {
     const formId = req.params.id; // Get the form's document _id from the URL parameter
     const seatId = req.params.seatId; // Get the seat's _id to delete from the URL parameter
   
@@ -815,7 +810,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.post('/engine', async (req, res) => {   
+  router.post('/engine', jwtMiddleware.verifyToken, async (req, res) => {   
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
     try {
@@ -844,7 +839,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.delete('/engine/:id/:enginegaurdsId', async (req, res) => {
+  router.delete('/engine/:id/:enginegaurdsId', jwtMiddleware.verifyToken, async (req, res) => {
     const formId = req.params.id; // Get the form's document _id from the URL parameter
     const enginegaurdsId = req.params.enginegaurdsId; // Get the seat's _id to delete from the URL parameter
   
@@ -871,7 +866,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.post('/sump', async (req, res) => {          
+  router.post('/sump', jwtMiddleware.verifyToken, async (req, res) => {          
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
     try {
@@ -900,7 +895,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.delete('/sump/:id/:sumpgaurdsId', async (req, res) => {
+  router.delete('/sump/:id/:sumpgaurdsId', jwtMiddleware.verifyToken, async (req, res) => {
     const formId = req.params.id; // Get the form's document _id from the URL parameter
     const sumpgaurdsId = req.params.sumpgaurdsId; 
   
@@ -927,7 +922,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.post('/other', async (req, res) => {          
+  router.post('/other', jwtMiddleware.verifyToken, async (req, res) => {          
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
     try {
@@ -956,7 +951,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.delete('/other/:id/:otheraccessoriesId', async (req, res) => {
+  router.delete('/other/:id/:otheraccessoriesId', jwtMiddleware.verifyToken, async (req, res) => {
     const formId = req.params.id; // Get the form's document _id from the URL parameter
     const otheraccessoriesId = req.params.otheraccessoriesId; // Get the otheraccessories _id to delete from the URL parameter
   
@@ -983,7 +978,7 @@ const FormData = require('../Models/formschema');
     }
   });
   
-  router.get('/getbike/:id', async (req, res) => {
+  router.get('/getbike/:id',  jwtMiddleware.verifyToken, async (req, res) => {
     try {
         const bikeId = req.params.id;
 
@@ -1000,7 +995,7 @@ const FormData = require('../Models/formschema');
     }
 });
 
-router.get('/getbikes/:section', async (req, res) => {
+router.get('/getbikes/:section', jwtMiddleware.verifyToken, async (req, res) => {
   try {
       const section = req.params.section; // Get the "section" parameter from the URL
       
@@ -1013,7 +1008,7 @@ router.get('/getbikes/:section', async (req, res) => {
   }
 });
 
-router.get('/getbikes', async (req, res) => {  
+router.get('/getbikes', jwtMiddleware.verifyToken, async (req, res) => {  
 
         try {
             const user = await FormData.find({})
@@ -1024,13 +1019,13 @@ router.get('/getbikes', async (req, res) => {
             console.log(error)
         }
     })
-    router.put('/updatebikes/:id', (req, res) => {
+    router.put('/updatebikes/:id', jwtMiddleware.verifyToken, (req, res) => {
         FormData.findByIdAndUpdate(req.params.id, req.body)  
             .then(() => res.json('Bikes updated'))
             .catch(err => res.status(400).json(`Error: ${err}`));
 
     })
-    router.delete('/deletebikes/:id', (req, res) => {
+    router.delete('/deletebikes/:id', jwtMiddleware.verifyToken, (req, res) => {
         FormData.findByIdAndDelete(req.params.id)  
             .then(() => res.json('Bikes deleted'))
             .catch(err => res.status(400).json(`Error: ${err}`));

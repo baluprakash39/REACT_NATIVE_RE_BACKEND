@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const jwtMiddleware = require('../jwtMiddleware');
 
 const FormData = require('../Models/Dealersschema'); 
 
-router.post('/dealerdetails', async (req, res) => {
+router.post('/dealerdetails', jwtMiddleware.verifyToken, async (req, res) => {
   try {
     const {
       companyname,
@@ -61,7 +62,7 @@ router.post('/dealerdetails', async (req, res) => {
     res.status(500).json({ message: 'Error creating/updating form' });
   }
 });
-  router.get('/getdealers', async (req, res) => {  
+  router.get('/getdealers', jwtMiddleware.verifyToken, async (req, res) => {  
 
     try {
         const user = await FormData.find({})

@@ -1,6 +1,7 @@
 const express = require('express');
 const AWS = require('aws-sdk');
 const router = express.Router();
+const jwtMiddleware = require('../jwtMiddleware');
 const FormData = require('../Models/Dealersschema'); 
 
 AWS.config.update ({
@@ -68,7 +69,7 @@ AWS.config.update ({
 //   });
 // });
 
-router.post('/single', (req, res) => {
+router.post('/single', jwtMiddleware.verifyToken, (req, res) => {
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).json({ error: 'No files were uploaded.' });
   }
@@ -127,7 +128,7 @@ router.post('/single', (req, res) => {
   });
 });
 
-router.get('/getdetails', async (req, res) => {  
+router.get('/getdetails', jwtMiddleware.verifyToken, async (req, res) => {  
 
   try {
       const user = await FormData.find({})
@@ -139,7 +140,7 @@ router.get('/getdetails', async (req, res) => {
   }
 })
 
-router.put('/update/:id', (req, res) => {
+router.put('/update/:id', jwtMiddleware.verifyToken, (req, res) => {
   FormData.findByIdAndUpdate(req.params.id, req.body)  
       .then(() => res.json('details updated'))
       .catch(err => res.status(400).json(`Error: ${err}`));
