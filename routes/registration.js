@@ -42,7 +42,7 @@ const RegisteredPhoneNumber = require('../Models/registrationschema');
           if (result) {
             res.json({ success: true, status: 'allowed',data:result, token, refreshToken });
           } else {
-            res.json({ success: true, status: 'not allowed' });
+            res.json({ success: false, status: 'not allowed' });
           }
         })
         .catch(err => {
