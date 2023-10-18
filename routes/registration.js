@@ -97,6 +97,7 @@ const RegisteredPhoneNumber = require('../Models/registrationschema');
 
        
     var mobileNo=req.body.phoneNumber;
+
      console.log(mobileNo)
 
      RegisteredPhoneNumber.findOne({phoneNumber:mobileNo}).select().exec().then( doc => {
