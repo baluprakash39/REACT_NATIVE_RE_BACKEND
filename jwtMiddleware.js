@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken');
 const secretKey = 'cgvhbxdfcvgvvgcfvb';
 
   function generateToken(phoneNumber) {
-    return jwt.sign({ phoneNumber }, secretKey, { expiresIn: '5min' }); // You can adjust the expiration time
+    return jwt.sign({ phoneNumber }, secretKey, { expiresIn: '15min' }); // You can adjust the expiration time
   }
 
 // Verify a JWT token
