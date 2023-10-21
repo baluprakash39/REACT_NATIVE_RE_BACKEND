@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken');
 const secretKey = 'cgvhbxdfcvgvvgcfvb';
 
   function generateToken(phoneNumber) {
-    return jwt.sign({ phoneNumber }, secretKey, { expiresIn: '20min' }); // You can adjust the expiration time
+    return jwt.sign({ phoneNumber }, secretKey, { expiresIn: '24h' }); // You can adjust the expiration time
   }
 
 // Verify a JWT token
@@ -40,7 +40,7 @@ function verifyToken(req, res, next) {
 
 
 function generateRefreshToken(phoneNumber) {
-    return jwt.sign({ phoneNumber }, secretKey, { expiresIn: '1hr' }); // Use the same secret key
+    return jwt.sign({ phoneNumber }, secretKey, { expiresIn: '7d' }); // Use the same secret key
   }
 
 // Handle token refresh
