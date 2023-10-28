@@ -33,6 +33,7 @@ router.post('/dealerdetails', jwtMiddleware.verifyToken, async (req, res) => {
       existingFormData.state = state;
       existingFormData.country = country;
       existingFormData.contactnumber = contactnumber;
+      existingFormData.gstin = gstin;
       existingFormData.dealeremailid = dealeremailid;
       existingFormData.website = website;
 
