@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 
 const formSchema = new mongoose.Schema({
   section : { type: String},
-  vehiclename : { type: String},
-  model: { type: String},
+  model : { type: String},
   EngineCC:{type: String},
   vehiclecolor:{ type: String},
   adminallimage:{type:String},
