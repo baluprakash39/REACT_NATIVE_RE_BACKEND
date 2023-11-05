@@ -166,7 +166,17 @@ const FormData = require('../Models/formschema');
       });
     }
   });
+  router.get('/getcare',jwtMiddleware.verifyToken, async (req, res) => {  
 
+    try {
+        const user = await FormData.find({})
+        
+        res.status(200).json({ user })
+    } catch (error) {
+        res.status(400).send(error)
+        console.error(error)
+    }
+});
   router.post('/colours', jwtMiddleware.verifyToken, async (req, res) => {
     const _id = req.query._id; // Get the document _id from the URL query parameters
   
