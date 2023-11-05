@@ -118,7 +118,8 @@ const FormData = require('../Models/formschema');
           { new: true }
         );
   
-        logger.info("Updated document:", updatedDoc);
+        console.log("Updated document:", updatedDoc);
+
         res.status(200).json({
           message: updatedDoc,
           status: "success",
@@ -151,14 +152,14 @@ const FormData = require('../Models/formschema');
   
         const createdForm = await FormData.create(formData);
   
-        logger.info("Created document:", createdForm);
+        console.log("Created document:", createdForm);
         res.status(201).json({
           message: createdForm,
           status: "success",
         });
       }
     } catch (error) {
-      logger.error('Error updating/creating document:', error);
+      console.error('Error updating/creating document:', error);
       res.status(500).json({
         message: "Internal server error",
         status: "error",
