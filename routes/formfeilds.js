@@ -76,7 +76,7 @@ const FormData = require('../Models/formschema');
     }
   });
 
-  router.post('/uploadcare/:id',jwtMiddleware.verifyToken, async (req, res) => {
+  router.post('/uploadcare/:id', jwtMiddleware.verifyToken, async (req, res) => {
     try {
       const {
         Basic,
@@ -92,42 +92,73 @@ const FormData = require('../Models/formschema');
   
       const query = { "_id": req.params.id }; // Access id from URL params
   
-      // Construct the update object to update specific fields in arrays
-      const update = {
-        $set: {
-          "insurance.0.Basic": Basic,
-          "insurance.0.Nildip": Nildip,
-          "insurance.0.Ep": Ep,
-          "insurance.0.RTI": RTI,
-          "hypothication.0.Yes": Yes,
-          "hypothication.0.No": No,
-          "extendedwarranty.0.fouryears": fouryears,
-          "extendedwarranty.0.fiveyears": fiveyears,
-          "extendedwarranty.0.fiveplusRSAyears": fiveplusRSAyears,
-        }
-      };
+      // Check if a document with the specified ID exists
+      const existingDoc = await FormData.findOne(query);
   
-      // Push the object to the 'colours' array within the document
-      const updatedDoc = await FormData.findOneAndUpdate(
-        query,
-        update,
-        { new: true }
-      );
+      if (existingDoc) {
+        // If the document exists, update specific fields
+        const update = {
+          $set: {
+            "insurance.0.Basic": Basic,
+            "insurance.0.Nildip": Nildip,
+            "insurance.0.Ep": Ep,
+            "insurance.0.RTI": RTI,
+            "hypothication.0.Yes": Yes,
+            "hypothication.0.No": No,
+            "extendedwarranty.0.fouryears": fouryears,
+            "extendedwarranty.0.fiveyears": fiveyears,
+            "extendedwarranty.0.fiveplusRSAyears": fiveplusRSAyears,
+          }
+        };
   
-      if (!updatedDoc) {
-        return res.status(404).json({
-          message: "Document not found",
-          status: "error",
+        // Update the existing document
+        const updatedDoc = await FormData.findOneAndUpdate(
+          query,
+          update,
+          { new: true }
+        );
+  
+        logger.info("Updated document:", updatedDoc);
+        res.status(200).json({
+          message: updatedDoc,
+          status: "success",
+        });
+      } else {
+        // If the document doesn't exist, create a new one
+        const formData = {
+          insurance: [
+            {
+              Basic,
+              Nildip,
+              Ep,
+              RTI
+            }
+          ],
+          hypothication: [
+            {
+              Yes,
+              No
+            }
+          ],
+          extendedwarranty: [
+            {
+              fouryears,
+              fiveyears,
+              fiveplusRSAyears
+            }
+          ],
+        };
+  
+        const createdForm = await FormData.create(formData);
+  
+        logger.info("Created document:", createdForm);
+        res.status(201).json({
+          message: createdForm,
+          status: "success",
         });
       }
-  
-      console.log("Updated document:", updatedDoc);
-      res.status(200).json({
-        message: updatedDoc,
-        status: "success",
-      });
     } catch (error) {
-      console.error('Error updating document:', error);
+      logger.error('Error updating/creating document:', error);
       res.status(500).json({
         message: "Internal server error",
         status: "error",
