@@ -20,9 +20,11 @@ const mongoose = require('mongoose');
       
         .then((result) => {
           console.log(result.role);
-          const token = jwtMiddleware.generateToken(phoneNumber,result.role);
+          // const token = jwtMiddleware.generateToken(phoneNumber,result.role);
+          const token = jwtMiddleware.generateToken(phoneNumber);
          console.log(token)
-      const refreshToken = jwtMiddleware.generateRefreshToken(phoneNumber,result.role);
+        //  const refreshToken = jwtMiddleware.generateRefreshToken(phoneNumber,result.role);
+      const refreshToken = jwtMiddleware.generateRefreshToken(phoneNumber);
           console.log(refreshToken)
           if (result) {
             res.json({ success: true, status: 'allowed',data:result,  token, refreshToken });
