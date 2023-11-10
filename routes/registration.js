@@ -97,6 +97,32 @@ router.get('/getAllRegisteredPhoneNumbers', async (req, res) => {
     res.status(500).json({ message: 'Internal server error', status: 'error' });
   }
 });
+// router.get('/getAllRegisteredAdmins', async (req, res) => {
+  
+//   try {
+//     // Fetch all registered phone numbers with the role 'admin'
+//     const allRegisteredAdmins = await RegisteredPhoneNumber.find();
+//     console.log('admins',allRegisteredAdmins)
+//   const filteredData = allRegisteredAdmins.filter(data=>{
+//     return data.role == 'admin'
+//   })
+//     console.log('filter',filteredData )
+//     if (filteredData.length === 0) {
+//       return res.status(404).json({ message: 'No admins registered yet', status: 'fail' });
+//     }
+
+//     res.json({
+//       message: 'All registered admins retrieved successfully',
+//       data: filteredData,
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: 'Internal server error', status: 'error' });
+//   }
+// });
+
+
+
 //phone number
   router.post('/getsignup', (req, res, next)=>{
 

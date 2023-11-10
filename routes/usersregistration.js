@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 // const jwtMiddleware = require('../jwtMiddleware');
-const RegisteredUser = require('../Models/registrationschema'); 
+const RegisteredUser = require('../Models/userschema'); 
 const RegisteredPhoneNumber = require('../Models/registrationschema'); // Add this line
 const logger = require('../logger');
 

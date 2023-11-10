@@ -11,6 +11,7 @@ const Multi = require("./routes/multipleimages");
 const routers = require("./routes/singleimage");
 const routerd = require('./routes/dealersform');
 const routerr = require('./routes/registration');
+const routeruser = require('./routes/usersregistration')
 // const routerc = require('./routes/careform');
 const url = 'mongodb+srv://Roshan:Roshan786@cluster0.eoiy197.mongodb.net/test?retryWrites=true&w=majority';
 
@@ -36,7 +37,7 @@ app.use('/uploadquotation', router);
 app.use('/bikes',routerv);
 app.use('/dealerdetails',routerd);
 app.use('/registerPhoneNumber',routerr);
-
+app.use('./registerUser', routeruser)
 // app.use('/uploadcare', routerc);
 
 module.exports = app;

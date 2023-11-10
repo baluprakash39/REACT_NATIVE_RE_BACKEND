@@ -13,12 +13,12 @@ const registeredPhoneNumberSchema = new mongoose.Schema({
 const RegisteredPhoneNumber = mongoose.model('RegisteredPhoneNumber', registeredPhoneNumberSchema);
 module.exports = RegisteredPhoneNumber;
 
-const formSchema = new mongoose.Schema({
-  username: { type: String },
-  userContactNumber: { type: String },
-  company: { type: mongoose.Schema.Types.ObjectId, ref: 'RegisteredPhoneNumber' },
-  role: { type: String },
-});
+// const formSchema = new mongoose.Schema({
+//   username: { type: String },
+//   userContactNumber: { type: String },
+//   company: { type: mongoose.Schema.Types.ObjectId, ref: 'RegisteredPhoneNumber' },
+//   role: { type: String },
+// });
 
-const RegisteredUser = mongoose.model('RegisteredUser', formSchema);
-module.exports = RegisteredUser;
+// const RegisteredUser = mongoose.model('RegisteredUser', formSchema);
+// module.exports = RegisteredUser;
