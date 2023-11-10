@@ -37,7 +37,7 @@ app.use('/uploadquotation', router);
 app.use('/bikes',routerv);
 app.use('/dealerdetails',routerd);
 app.use('/registerPhoneNumber',routerr);
-app.use('./registerUser', routeruser)
+app.use('/registerUser', routeruser)
 // app.use('/uploadcare', routerc);
 
 module.exports = app;
