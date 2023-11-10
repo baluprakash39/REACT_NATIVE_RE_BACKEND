@@ -1,32 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const jwtMiddleware = require('../jwtMiddleware');
-
 const RegisteredPhoneNumber = require('../Models/registrationschema'); 
+// const logger = require('../logger');
+const mongoose = require('mongoose');
 
-  // GET endpoint to retrieve all registered phone numbers based on a specific phone number query parameter
-  // router.get('/allRegisteredPhoneNumbers', async (req, res) => {
-  //   try {
-  //     const { phoneNumber, deviceId } = req.query;
-  
-  //     if (!phoneNumber || !deviceId) {
-  //       return res.status(400).json({ message: 'Phone number and deviceId are required in the query parameters.' });
-  //     }
-  
-  //     const registeredPhoneNumbers = await RegisteredPhoneNumber.find({ phoneNumber, deviceId });
-  
-  //     if (registeredPhoneNumbers.length > 0) {
-  //       // Create an array of objects with phoneNumber and deviceId
-  //       const phoneNumbers = registeredPhoneNumbers.map((entry) => ({ phoneNumber: entry.phoneNumber, deviceId: entry.deviceId }));
-  //       res.json({ success: true, phoneNumbers });
-  //     } else {
-  //       res.json({ success: false, message: 'Phone number not found' });
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //     res.status(500).json({ message: 'Internal server error' });
-  //   }
-  // });
+//logging in
   router.get('/checkPhoneNumberAndDevice', async (req, res) => {
     try {
       const { phoneNumber, deviceId } = req.query;
@@ -36,15 +15,21 @@ const RegisteredPhoneNumber = require('../Models/registrationschema');
       }
   
       RegisteredPhoneNumber.findOne({ phoneNumber, deviceId })
+      
         .then((result) => {
-          const token = jwtMiddleware.generateToken(phoneNumber);
-          const refreshToken = jwtMiddleware.generateRefreshToken(phoneNumber);
+          logger.log(result.role);
+          const token = jwtMiddleware.generateToken(phoneNumber,result.role);
+         console.log(token)
+      const refreshToken = jwtMiddleware.generateRefreshToken(phoneNumber,result.role);
+          console.log(refreshToken)
           if (result) {
-            res.json({ success: true, status: 'allowed',data:result, token, refreshToken });
+            res.json({ success: true, status: 'allowed',data:result,  token, refreshToken });
           } else {
             res.json({ success: false, status: 'not allowed' });
           }
         })
+        
+
         .catch(err => {
           console.error(err);
           res.status(500).json({ message: 'Internal server error' });
@@ -54,9 +39,9 @@ const RegisteredPhoneNumber = require('../Models/registrationschema');
       res.status(500).json({ message: 'Internal server error' });
     }
   });
-  // POST endpoint to register a new phone numberw
+//restering admin
   router.post('/registerPhoneNumber', async (req, res) => {
-    const { phoneNumber, name, email, companyname, deviceId } = req.body;
+    const { phoneNumber, name, email, companyname, brandname, deviceId, role } = req.body;
   
     if (!phoneNumber) {
       return res.status(400).json({ message: 'Phone number is required in the request body.' });
@@ -67,7 +52,7 @@ const RegisteredPhoneNumber = require('../Models/registrationschema');
   
     if (existingPhoneNumber) {
       // A record with the same phone number and device ID already exists
-      return res.status(400).json({ message: 'Phone number is already registered.' });
+      return res.status(400).json({ message: 'Phone number is already registered.',status:'fail' });
     }
   
     // new record creation
@@ -76,7 +61,9 @@ const RegisteredPhoneNumber = require('../Models/registrationschema');
       name,
       email,
       companyname,
-      deviceId
+      brandname,
+      deviceId,
+      role,
     });
   
     registeredPhoneNumber.save()
@@ -92,20 +79,37 @@ const RegisteredPhoneNumber = require('../Models/registrationschema');
         res.status(500).json({ message: 'Internal server error' });
       });
   });
-  
- router.post('/getsignup', (req, res, next)=>{
+//get all admins
+router.get('/getAllRegisteredPhoneNumbers', async (req, res) => {
+  try {
+    const allRegisteredPhoneNumbers = await RegisteredPhoneNumber.find();
+    
+    if (allRegisteredPhoneNumbers.length === 0) {
+      return res.status(404).json({ message: 'No phone numbers registered yet', status: 'fail' });
+    }
+
+    res.json({
+      message: 'All registered phone numbers retrieved successfully',
+      data: allRegisteredPhoneNumbers,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error', status: 'error' });
+  }
+});
+//phone number
+  router.post('/getsignup', (req, res, next)=>{
 
        
     var mobileNo=req.body.phoneNumber;
-
-     console.log(mobileNo)
+    console.log(mobileNo)
 
      RegisteredPhoneNumber.findOne({phoneNumber:mobileNo}).select().exec().then( doc => {
      var user  = req.body.phoneNumber;
      if(doc == null || doc == undefined || doc ==''){
        res.status(400).json({ 
            Authentication: 'User not exist',
-           message:'failed'
+           message:'failed', 
        })
      }
    
@@ -114,7 +118,7 @@ const RegisteredPhoneNumber = require('../Models/registrationschema');
                               message: "Success",
                               adminaccept:doc.adminaccept,
                              userProfile:doc,
-                           })
+                             })
      }
      else
      { 
@@ -125,18 +129,73 @@ const RegisteredPhoneNumber = require('../Models/registrationschema');
  
      }
     }).catch(err => {
-        console.log(err);
+       console.log(err);
         res.status(500).json({error: err});
     });
  
  
  });
- 
+ //phone number device id
+ router.get('/check', async (req, res) => {
+  try {
+    const { phoneNumber, deviceId } = req.query;
+
+    if (!phoneNumber || !deviceId) {
+      return res.status(400).json({ message: 'Phone number and deviceId are required in the query parameters.' });
+    }
+
+    RegisteredPhoneNumber.findOne({ phoneNumber, deviceId })
+    
+      .then((result) => {
+        const token = jwtMiddleware.generateToken(phoneNumber);
+       console.log(token)
+    const refreshToken = jwtMiddleware.generateRefreshToken(phoneNumber);
+        console.log(refreshToken)
+        if (result) {
+          res.json({ success: true, status: 'allowed',data:result,  token, refreshToken });
+        } else {
+          res.json({ success: false, status: 'not allowed' });
+        }
+      })
+      
+
+      .catch(err => {
+        console.error(err);
+        res.status(500).json({ message: 'Internal server error' });
+      });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+//refresh token
  router.post('/refresh-token', (req, res) => {
   const refreshTokenValue = req.body.refreshToken;
 
   // Verify the refresh token
   jwtMiddleware.refreshToken(req, res);
 });
+//delete admins
+router.delete('/deleteRegisteredPhoneNumber/:phoneNumberId', async (req, res) => {
+  try {
+    const phoneNumberId = req.params.phoneNumberId;
+
+    // Check if the phone number exists
+    const phoneNumberToDelete = await RegisteredPhoneNumber.findById(phoneNumberId);
+    if (!phoneNumberToDelete) {
+      return res.status(404).json({ message: 'Phone number not found', status: 'fail' });
+    }
+
+    // Delete the phone number
+    await RegisteredPhoneNumber.findByIdAndDelete(phoneNumberId);
+
+    res.json({ message: 'Phone number deleted successfully', status: 'success' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error', status: 'error' });
+  }
+});
+
+
 
 module.exports = router;
