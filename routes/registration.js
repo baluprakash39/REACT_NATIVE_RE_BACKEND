@@ -7,9 +7,11 @@ const mongoose = require('mongoose');
 
 //logging in
   router.get('/checkPhoneNumberAndDevice', async (req, res) => {
+   
     try {
+      console.log('API:', req.checkPhoneNumberAndDevice); 
       const { phoneNumber, deviceId } = req.query;
-  
+       
       if (!phoneNumber || !deviceId) {
         return res.status(400).json({ message: 'Phone number and deviceId are required in the query parameters.' });
       }
@@ -17,7 +19,7 @@ const mongoose = require('mongoose');
       RegisteredPhoneNumber.findOne({ phoneNumber, deviceId })
       
         .then((result) => {
-          logger.log(result.role);
+          console.log(result.role);
           const token = jwtMiddleware.generateToken(phoneNumber,result.role);
          console.log(token)
       const refreshToken = jwtMiddleware.generateRefreshToken(phoneNumber,result.role);
@@ -39,6 +41,7 @@ const mongoose = require('mongoose');
       res.status(500).json({ message: 'Internal server error' });
     }
   });
+  
 //restering admin
   router.post('/registerPhoneNumber', async (req, res) => {
     const { phoneNumber, name, email, companyname, brandname, deviceId, role } = req.body;
