@@ -247,4 +247,63 @@ router.put('/updateAcceptStatus/:id', async (req, res) => {
 });
 
 
+router.put('/updateadmin/:id', async (req, res) => {
+  const { phoneNumber, name, email, companyname, brandname, deviceId, role } = req.body;
+
+  if (!phoneNumber) {
+    return res.status(400).json({ message: 'Phone number is required in the request body.' });
+  }
+
+  try {
+    // Find the existing record by ID
+    const existingPhoneNumber = await RegisteredPhoneNumber.findById(req.params.id);
+
+    if (!existingPhoneNumber) {
+      // If the record with the provided ID is not found
+      return res.status(404).json({ message: 'Phone number not found.' });
+    }
+
+    // Update the record with the new information
+    existingPhoneNumber.phoneNumber = phoneNumber || existingPhoneNumber.phoneNumber;
+    existingPhoneNumber.name = name || existingPhoneNumber.name;
+    existingPhoneNumber.email = email || existingPhoneNumber.email;
+    existingPhoneNumber.companyname = companyname || existingPhoneNumber.companyname;
+    existingPhoneNumber.brandname = brandname || existingPhoneNumber.brandname;
+    existingPhoneNumber.deviceId = deviceId || existingPhoneNumber.deviceId;
+    existingPhoneNumber.role = role || existingPhoneNumber.role;
+
+    // Save the updated record
+    const updatedPhoneNumber = await existingPhoneNumber.save();
+
+    // Respond with the updated record
+    res.json({
+      message: 'Phone number updated successfully',
+      data: updatedPhoneNumber,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+router.get('/getadminid/:id', async (req, res) => {
+  try {
+    // Find the record by ID
+    const phoneNumber = await RegisteredPhoneNumber.findById(req.params.id);
+
+    if (!phoneNumber) {
+      // If the record with the provided ID is not found
+      return res.status(404).json({ message: 'Phone number not found.', status: 'fail' });
+    }
+
+    // Respond with the found record
+    res.json({
+      message: 'Phone number retrieved successfully',
+      data: phoneNumber,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 module.exports = router;
