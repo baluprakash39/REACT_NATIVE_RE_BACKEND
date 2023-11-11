@@ -46,7 +46,7 @@ const mongoose = require('mongoose');
   
 //restering admin
   router.post('/registerPhoneNumber', async (req, res) => {
-    const { phoneNumber, name, email, companyname, brandname, deviceId, role } = req.body;
+    const { phoneNumber, name, email, companyname, brandname, currentdate, deviceId, role } = req.body;
   
     if (!phoneNumber) {
       return res.status(400).json({ message: 'Phone number is required in the request body.' });
@@ -67,6 +67,7 @@ const mongoose = require('mongoose');
       email,
       companyname,
       brandname,
+      currentdate,
       deviceId,
       role,
     });
@@ -227,6 +228,23 @@ router.delete('/deleteRegisteredPhoneNumber/:phoneNumberId', async (req, res) =>
   }
 });
 
+// Update accept status endpoint
+router.put('/updateAcceptStatus/:id', async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const updatedPhoneNumber = await RegisteredPhoneNumber.findByIdAndUpdate(
+      id,
+      { adminaccept: req.body.adminaccept },
+      { new: true }
+    );
+
+    res.json(updatedPhoneNumber);
+  } catch (error) {
+    console.error('Error updating accept status:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 
 module.exports = router;

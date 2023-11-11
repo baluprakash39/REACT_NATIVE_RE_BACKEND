@@ -6,8 +6,11 @@ const registeredPhoneNumberSchema = new mongoose.Schema({
   email: { type: String },
   companyname: { type: String },
   deviceId: { type: String },
+  brandname:{type:String},
+  currentdate:{type:String},
   adminaccept: { type: Boolean, default: false },
   role: { type: String },
+
 });
 
 const RegisteredPhoneNumber = mongoose.model('RegisteredPhoneNumber', registeredPhoneNumberSchema);
