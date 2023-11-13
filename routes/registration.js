@@ -248,42 +248,12 @@ router.put('/updateAcceptStatus/:id', async (req, res) => {
 
 
 router.put('/updateadmin/:id', async (req, res) => {
-  const { phoneNumber, name, email, companyname, brandname, deviceId, role, adminaccept} = req.body;
-
-  if (!phoneNumber) {
-    return res.status(400).json({ message: 'Phone number is required in the request body.' });
-  }
-
   try {
-    // Find the existing record by ID
-    const existingPhoneNumber = await RegisteredPhoneNumber.findById(req.params.id);
-
-    if (!existingPhoneNumber) {
-      // If the record with the provided ID is not found
-      return res.status(404).json({ message: 'Phone number not found.' });
-    }
-
-    // Update the record with the new information
-    existingPhoneNumber.phoneNumber = phoneNumber || existingPhoneNumber.phoneNumber;
-    existingPhoneNumber.name = name || existingPhoneNumber.name;
-    existingPhoneNumber.email = email || existingPhoneNumber.email;
-    existingPhoneNumber.companyname = companyname || existingPhoneNumber.companyname;
-    existingPhoneNumber.brandname = brandname || existingPhoneNumber.brandname;
-    existingPhoneNumber.deviceId = deviceId || existingPhoneNumber.deviceId;
-    existingPhoneNumber.role = role || existingPhoneNumber.role;
-    existingPhoneNumber.adminaccept = adminaccept || existingPhoneNumber.adminaccept;
-
-    // Save the updated record
-    const updatedPhoneNumber = await existingPhoneNumber.save();
-
-    // Respond with the updated record
-    res.json({
-      message: 'Phone number updated successfully',
-      data: updatedPhoneNumber,
-    });
+    await RegisteredPhoneNumber.findByIdAndUpdate(req.params.id, req.body);
+    res.json('Admin details updated successfully');
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(400).json(`Error: ${error}`);
   }
 });
 
