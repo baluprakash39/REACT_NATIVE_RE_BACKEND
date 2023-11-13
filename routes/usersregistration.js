@@ -7,11 +7,11 @@ const logger = require('../logger');
 
 
 router.post('/registerUser', async (req, res) => {
-  const { username, userContactNumber, companyname, role } = req.body;
+  const { name, phoneNumber, companyname, role, currentdate, deviceId, adminaccept } = req.body;
 
   try {
     // Check if a record with the same user contact number already exists
-    const existingUser = await RegisteredUser.findOne({ userContactNumber });
+    const existingUser = await RegisteredUser.findOne({ phoneNumber });
 
     if (existingUser) {
       // A record with the same user contact number already exists
@@ -20,10 +20,13 @@ router.post('/registerUser', async (req, res) => {
 
     // Create a new user record
     const registeredUser = new RegisteredUser({
-      username,
-      userContactNumber,
+      name,
+      phoneNumber,
       companyname,
       role,
+      currentdate,
+      deviceId,
+      adminaccept,
     });
 
     const savedUser = await registeredUser.save();

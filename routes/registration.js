@@ -248,9 +248,12 @@ router.put('/updateAcceptStatus/:id', async (req, res) => {
 
 
 router.put('/updateadmin/:id', async (req, res) => {
+  console.log(req.body)
   try {
     await RegisteredPhoneNumber.findByIdAndUpdate(req.params.id, req.body);
-    res.json('Admin details updated successfully');
+    res.json('Admin details updated successfully',
+
+    );
   } catch (error) {
     console.error(error);
     res.status(400).json(`Error: ${error}`);
