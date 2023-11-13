@@ -248,7 +248,7 @@ router.put('/updateAcceptStatus/:id', async (req, res) => {
 
 
 router.put('/updateadmin/:id', async (req, res) => {
-  const { phoneNumber, name, email, companyname, brandname, deviceId, role } = req.body;
+  const { phoneNumber, name, email, companyname, brandname, deviceId, role, adminaccept} = req.body;
 
   if (!phoneNumber) {
     return res.status(400).json({ message: 'Phone number is required in the request body.' });
@@ -271,6 +271,7 @@ router.put('/updateadmin/:id', async (req, res) => {
     existingPhoneNumber.brandname = brandname || existingPhoneNumber.brandname;
     existingPhoneNumber.deviceId = deviceId || existingPhoneNumber.deviceId;
     existingPhoneNumber.role = role || existingPhoneNumber.role;
+    existingPhoneNumber.adminaccept = adminaccept || existingPhoneNumber.adminaccept;
 
     // Save the updated record
     const updatedPhoneNumber = await existingPhoneNumber.save();
