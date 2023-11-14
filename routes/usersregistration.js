@@ -27,7 +27,7 @@ router.post('/registerUser', async (req, res) => {
      }
  
      // Get the current user count
-     const currentUserCount = await RegisteredUser.countDocuments({ companyname, role: 'user' });
+     const currentUserCount = await RegisteredPhoneNumber.countDocuments({ companyname, role: 'user' });
  
      // Get the available user count based on the updated count
      const availableCount = adminRecord.count - currentUserCount;
