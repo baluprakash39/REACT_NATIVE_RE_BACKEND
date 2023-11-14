@@ -10,7 +10,7 @@ const registeredPhoneNumberSchema = new mongoose.Schema({
   currentdate:{type:String},
   adminaccept: { type: Boolean, default: false },
   role: { type: String },
-  count:{type:String}
+  count:{type:String,default:3}
 
 });
 
