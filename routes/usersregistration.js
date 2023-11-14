@@ -17,6 +17,24 @@ router.post('/registerUser', async (req, res) => {
       // A record with the same user contact number already exists
       return res.status(400).json({ message: 'User with the provided contact number is already registered.', status: 'fail' });
     }
+    
+     
+     // Find the admin record for the specified company
+     const adminRecord = await RegisteredPhoneNumber.findOne({ companyname, role: 'admin', adminaccept: true });
+
+     if (!adminRecord) {
+       return res.status(404).json({ message: 'Admin not found for the specified company and role.', status: 'fail' });
+     }
+ 
+     // Get the current user count
+     const currentUserCount = await RegisteredUser.countDocuments({ companyname, role: 'user' });
+ 
+     // Get the available user count based on the updated count
+     const availableCount = adminRecord.count - currentUserCount;
+ 
+     if (availableCount <= 0) {
+       return res.status(400).json({ message: 'User limit reached for the specified company.', status: 'fail' });
+     }
 
     // Create a new user record
     const registeredUser = new RegisteredUser({
@@ -30,7 +48,7 @@ router.post('/registerUser', async (req, res) => {
     });
 
     const savedUser = await registeredUser.save();
-
+    
     res.json({
       message: 'User registered successfully',
       data: savedUser,
@@ -40,7 +58,6 @@ router.post('/registerUser', async (req, res) => {
     res.status(500).json({ message: 'Internal server error', status: 'error' });
   }
 });
-
 router.get('/checkCompanyNameAndRole', async (req, res) => {
   try {
     const { companyname, role } = req.query;
