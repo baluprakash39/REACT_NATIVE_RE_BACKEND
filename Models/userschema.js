@@ -3,7 +3,7 @@ mongoose = require('mongoose');
 const RegisteredUserSchema = new mongoose.Schema({
   name: { type: String },
   phoneNumber: { type: String },
-  companyname: { type: mongoose.Schema.Types.ObjectId, ref: 'RegisteredPhoneNumber' },
+  companyname: {type: mongoose.Schema.Types.ObjectId || String,ref: 'RegisteredPhoneNumber'},
   role: { type: String },
   currentdate:{ type: String },
   deviceId: { type: String },
