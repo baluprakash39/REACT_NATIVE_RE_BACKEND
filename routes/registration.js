@@ -101,6 +101,7 @@ router.get('/getAllRegisteredPhoneNumbers', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Internal server error', status: 'error' });
+    
   }
 });
 // router.get('/getAllRegisteredAdmins', async (req, res) => {
