@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 // const jwtMiddleware = require('../jwtMiddleware');
-const RegisteredUser = require('../Models/userschema'); 
+const RegisteredUser = require('../Models/registrationschema'); 
 const RegisteredPhoneNumber = require('../Models/registrationschema'); // Add this line
 const logger = require('../logger');
 
@@ -27,7 +27,7 @@ router.post('/registerUser', async (req, res) => {
      }
  
      // Get the current user count
-     const currentUserCount = await RegisteredPhoneNumber.countDocuments({ companyname, role: 'user' });
+     const currentUserCount = await RegisteredUser.countDocuments({ companyname, role: 'user' });
  
      // Get the available user count based on the updated count
      const availableCount = adminRecord.count - currentUserCount;
