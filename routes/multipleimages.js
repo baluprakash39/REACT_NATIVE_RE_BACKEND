@@ -4,14 +4,14 @@ const router = express.Router();
 const jwtMiddleware = require('../jwtMiddleware');
 const FormData = require('../Models/formschema'); 
 const config = {
-  accessKeyId: 'AKIAVMRPENK3IVSXIVXR',
-  secretAccessKey: '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',
-  region: 'us-east-2',
+  accessKeyId: 'AKIA4NZVQN5SIJCFS36Y',
+  secretAccessKey: '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',
+  // region: 'us-east-2',
 };
 
 const s3 = new AWS.S3({
   credentials: config,
-  region: config.region,
+  // region: config.region,
 });
 
 router.get('/images', jwtMiddleware.verifyToken, async (req,res) =>{ 
@@ -107,10 +107,10 @@ router.post('/upload/:id', jwtMiddleware.verifyToken, async (req, res) => {
     const fileName = `${uniqueKey}.${fileExtension}`;
 
     const params = {
-      Bucket: 'laxmi-bucket',
+      Bucket: 'motoq',
       Key: fileName,
       Body: file.data,
-      ACL: 'public-read',
+      // ACL: 'public-read',
     };
 
     const uploadResult = await s3.upload(params).promise();

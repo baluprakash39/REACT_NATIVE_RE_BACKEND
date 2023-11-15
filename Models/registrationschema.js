@@ -5,24 +5,22 @@ const registeredPhoneNumberSchema = new mongoose.Schema({
   name: { type: String },
   email: { type: String },
   companyname: { type: String },
+  brandname: {type:String},
+  gst:{type:String},
+  address:{type:String},
+  streetname:{type:String},
+  pincode:{type:String},
+  city:{type:String},
+  state:{type:String},
+  country:{type:String},
+  website:{type:String},
+  image: { type: String },
+  currentdate:{ type: String },
   deviceId: { type: String },
-  brandname:{type:String},
-  currentdate:{type:String},
   adminaccept: { type: Boolean, default: false },
   role: { type: String },
-  count:{type:String,default:3}
-
+  count: { type: Number, default: 3 }, // Set a default value for the initial user limit
 });
 
 const RegisteredPhoneNumber = mongoose.model('RegisteredPhoneNumber', registeredPhoneNumberSchema);
 module.exports = RegisteredPhoneNumber;
-
-// const formSchema = new mongoose.Schema({
-//   username: { type: String },
-//   userContactNumber: { type: String },
-//   company: { type: mongoose.Schema.Types.ObjectId, ref: 'RegisteredPhoneNumber' },
-//   role: { type: String },
-// });
-
-// const RegisteredUser = mongoose.model('RegisteredUser', formSchema);
-// module.exports = RegisteredUser;

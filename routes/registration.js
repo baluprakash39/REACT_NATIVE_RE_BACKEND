@@ -1,9 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const jwtMiddleware = require('../jwtMiddleware');
+const AWS = require('aws-sdk');
 const RegisteredPhoneNumber = require('../Models/registrationschema'); 
 // const logger = require('../logger');
 const mongoose = require('mongoose');
+
+AWS.config.update ({
+  accessKeyId: 'AKIA4NZVQN5SIJCFS36Y',
+  secretAccessKey: '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',
+  // region: 'us-east-2',
+});
 
 //logging in
   router.get('/checkPhoneNumberAndDevice', async (req, res) => {
@@ -45,46 +52,82 @@ const mongoose = require('mongoose');
   });
   
 //restering admin
-  router.post('/registerPhoneNumber', async (req, res) => {
-    const { phoneNumber, name, email, companyname, brandname, currentdate, deviceId, role } = req.body;
-  
-    if (!phoneNumber) {
-      return res.status(400).json({ message: 'Phone number is required in the request body.' });
+router.post('/registerPhoneNumber', async (req, res) => {
+  const { phoneNumber, name, email, companyname, brandname, currentdate, gst, address, streetname, pincode, city, state, country, website, deviceId, role, image } = req.body;
+
+  if (!phoneNumber) {
+    return res.status(400).json({ message: 'Phone number is required in the request body.' });
+  }
+
+  // Check if a record with the same phone number and device ID already exists
+  const existingPhoneNumber = await RegisteredPhoneNumber.findOne({ phoneNumber, deviceId });
+
+  if (existingPhoneNumber) {
+    // A record with the same phone number and device ID already exists
+    return res.status(400).json({ message: 'Phone number is already registered.',status:'fail' });
+  }
+
+  // Check if image data exists in the request
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).json({ message: 'No image uploaded.' });
+  }
+
+  // Assuming the image field in the request is 'image'
+  const file = req.files.image;
+
+  const s3 = new AWS.S3();
+  const bucketName = 'motoq';
+  const timestamp = Date.now(); // Generate a timestamp
+  const key = `images/${timestamp}-${file.name}`;
+  const params = {
+    Bucket: bucketName,
+    Key: key,
+    Body: file.data,
+  };
+
+  // Uploading image to S3
+  s3.upload(params, async (err, data) => {
+    if (err) {
+      console.error('Error uploading image to S3:', err);
+      return res.status(500).json({ message: 'Error uploading image.' });
     }
-  
-    // Check if a record with the same phone number and device ID already exists
-    const existingPhoneNumber = await RegisteredPhoneNumber.findOne({ phoneNumber, deviceId });
-  
-    if (existingPhoneNumber) {
-      // A record with the same phone number and device ID already exists
-      return res.status(400).json({ message: 'Phone number is already registered.',status:'fail' });
-    }
-  
-    // new record creation
+
+    // Image uploaded successfully, now proceed with user registration
+    const image = data.Location; // Retrieve image URL
+
+    // Create a new record including the image path
     const registeredPhoneNumber = new RegisteredPhoneNumber({
       phoneNumber,
       name,
       email,
       companyname,
-      brandname,
       currentdate,
+      brandname,
+      gst,
+      address,
+      streetname,
+      pincode,
+      city,
+      state,
+      country,
+      website,
       deviceId,
       role,
+      image, // Include the image path in the model
     });
-  
-    registeredPhoneNumber.save()
-      .then(savedPhoneNumber => {
-        // Include the registeredPhoneNumber details in the response
-        res.json({
-          message: 'Phone number registered successfully',
-          data: savedPhoneNumber,
-        });
-      })
-      .catch(err => {
-        console.error(err);
-        res.status(500).json({ message: 'Internal server error' });
+
+    try {
+      const savedPhoneNumber = await registeredPhoneNumber.save();
+      res.status(200).json({
+        message: 'Phone number registered successfully with image',
+        data: savedPhoneNumber,
       });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
+    }
   });
+});
 //get all admins
 router.get('/getAllRegisteredPhoneNumbers', async (req, res) => {
   try {
@@ -101,7 +144,7 @@ router.get('/getAllRegisteredPhoneNumbers', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Internal server error', status: 'error' });
-    
+
   }
 });
 // router.get('/getAllRegisteredAdmins', async (req, res) => {
