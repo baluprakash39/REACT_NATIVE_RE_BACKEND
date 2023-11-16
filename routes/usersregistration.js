@@ -66,19 +66,22 @@ router.get('/checkCompanyNameAndRole', async (req, res) => {
       return res.status(400).json({ message: 'Company name and role are required in the query parameters.' });
     }
 
-    const adminRecord = await RegisteredPhoneNumber.findOne({ companyname: companyname, role: role });
+    // Find an admin for the specified company
+    const adminRecord = await RegisteredPhoneNumber.findOne({ companyname, role: 'admin', adminaccept: true });
 
     if (adminRecord) {
-      const usersWithSameCompanyAndRole = await RegisteredUser.find({ companyname: companyname, role: role });
+      // Find all users for the same company name and role 'user'
+      const usersWithSameCompanyAndRole = await RegisteredUser.find({ companyname, role: 'user' });
 
       res.json({
         success: true,
         status: 'allowed',
         adminData: adminRecord,
         users: usersWithSameCompanyAndRole,
+        message: 'Matching users retrieved based on admin company and user role.',
       });
     } else {
-      res.json({ success: false, status: 'not allowed' });
+      res.json({ success: false, status: 'not allowed', message: 'No matching admin found for the company or invalid role.' });
     }
   } catch (err) {
     console.error(err);
