@@ -119,5 +119,25 @@ router.delete('/deleteUser/:id', async (req, res) => {
     res.status(500).json({ message: 'Internal server error', status: 'error' });
   }
 });
+router.get('/getDocumentById/:id', async (req, res) => {
+  try {
+    const documentId = req.params.id;
 
+    if (!documentId) {
+      return res.status(400).json({ message: 'Document ID is required.' });
+    }
+
+   
+    const document = await RegisteredPhoneNumber.findById(documentId);
+
+    if (!document) {
+      return res.status(404).json({ message: 'Document not found.' });
+    }
+
+    res.json({ success: true, document });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 module.exports = router;
