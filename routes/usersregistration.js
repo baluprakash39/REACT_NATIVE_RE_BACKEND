@@ -89,5 +89,35 @@ router.get('/checkCompanyNameAndRole', async (req, res) => {
   }
 });
 
+router.put('/updateUser/:id', async (req, res) => {
+  try {
+    await RegisteredUser.findByIdAndUpdate(req.params.id, req.body);
+    res.json('User details updated successfully');
+  } catch (error) {
+    console.error(error);
+    res.status(400).json(`Error: ${error}`);
+  }
+});
+//delete users
+router.delete('/deleteUser/:id', async (req, res) => {
+  try {
+    // Find the user record by ID and remove it
+    const deletedUser = await RegisteredUser.findByIdAndRemove(req.params.id);
+
+    if (!deletedUser) {
+      // If the user with the provided ID is not found
+      return res.status(404).json({ message: 'User not found.', status: 'fail' });
+    }
+
+    // Respond with the deleted user record
+    res.json({
+      message: 'User deleted successfully',
+      data: deletedUser,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error', status: 'error' });
+  }
+});
 
 module.exports = router;
