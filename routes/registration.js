@@ -324,4 +324,24 @@ router.get('/getadminid/:id', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+router.get('/getphonenumber/:phoneNumber', async (req, res) => {
+  try {
+    // Find the record by phone number
+    const phoneNumberDetails = await RegisteredPhoneNumber.findOne({ phoneNumber: req.params.phoneNumber });
+
+    if (!phoneNumberDetails) {
+      // If the record with the provided phone number is not found
+      return res.status(404).json({ message: 'Phone number details not found.', status: 'fail' });
+    }
+
+    // Respond with the found record
+    res.json({
+      message: 'Phone number details retrieved successfully',
+      data: phoneNumberDetails,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 module.exports = router;
