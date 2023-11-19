@@ -69,7 +69,7 @@ router.get('/checkCompanyNameAndRole', async (req, res) => {
     // Find an admin for the specified company
     const adminRecord = await RegisteredPhoneNumber.findOne({ companyname, role: 'admin', adminaccept: true });
 
-    if (adminRecord) {
+    if (adminRecord) { 
       // Find all users for the same company name and role 'user'
       const usersWithSameCompanyAndRole = await RegisteredUser.find({ companyname, role: 'user' });
 
