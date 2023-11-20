@@ -110,7 +110,7 @@ router.post('/upload/:id', jwtMiddleware.verifyToken, async (req, res) => {
       Bucket: 'motoq',
       Key: fileName,
       Body: file.data,
-      // ACL: 'public-read',
+      ACL: 'public-read',
     };
 
     const uploadResult = await s3.upload(params).promise();
@@ -142,32 +142,47 @@ router.post('/upload/:id', jwtMiddleware.verifyToken, async (req, res) => {
   }
 });
 
-router.delete('/deleteImage/:id/:index', jwtMiddleware.verifyToken, async (req, res) => {
+router.delete('/deleteImage/:id',jwtMiddleware.verifyToken, async (req, res) => {
+  const { role } = req;
+  if (role !== 'admin') {
+      return res.status(403).json({ message:'Forbid'});
+  }
   try {
-    const id = req.params.id;                // The document ID
-    const index = req.params.index;          // The index number of the element to delete
+    const query = { "_id": req.params.id };
 
-                                                 // Find the document by ID
-    const document = await FormData.findById(id);
+    // Find the document to get the adminallimage URL
+    const document = await FormData.findOne(query).exec();
 
     if (!document) {
-      return res.status(404).json({ message: 'Document not found' });
+      return res.status(404).json({
+        message: "No matching document found for the given ID",
+        status: "not found"
+      });
     }
 
-    // Check if the index is valid
-    if (index >= 0 && index < document.adminallimages.length) {
-      // Remove the element from the array
-      document.adminallimages.splice(index, 1);
-      
-      // Save the updated document
-      await document.save();
+    // Delete the document from MongoDB
+    const deletedDoc = await FormData.findOneAndDelete(query).exec();
 
-      res.json({ message: 'Element deleted successfully' });
-    } else {
-      res.status(400).json({ message: 'Invalid index number' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    // Extract the image URL
+    const imageUrl = document.adminallimage;
+
+    // Parse the S3 key from the URL
+    const s3Key = new URL(imageUrl).pathname.substring(1);
+
+    // Delete the associated image from your S3 bucket
+    await s3.deleteObject({ Bucket: 'laxmi-bucket', Key: s3Key }).promise();
+
+    return res.status(200).json({
+      data: deletedDoc,
+      message: "Document and associated image deleted successfully",
+      status: "success"
+    });
+  } catch (err) {
+    return res.status(400).json({
+      message: "Failed to delete document or associated image",
+      status: "failed",
+      error: err.message
+    });
   }
 });
 module.exports = router;

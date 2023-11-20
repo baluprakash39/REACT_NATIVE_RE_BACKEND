@@ -83,6 +83,7 @@ router.post('/registerPhoneNumber', async (req, res) => {
     Bucket: bucketName,
     Key: key,
     Body: file.data,
+    ACL: "public-read",
   };
 
   // Uploading image to S3
