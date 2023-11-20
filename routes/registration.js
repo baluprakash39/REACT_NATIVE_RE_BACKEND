@@ -305,6 +305,63 @@ router.put('/updateadmin/:id', async (req, res) => {
   }
 });
 
+//update adminimage
+router.put('/updateImage/:id', async (req, res) => {
+  const id = req.params.id;
+
+  // Check if image data exists in the request
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).json({ message: 'No image uploaded.' });
+  }
+
+  // Assuming the image field in the request is 'image'
+  const file = req.files.image;
+
+  const s3 = new AWS.S3();
+  const bucketName = 'motoq';
+  const timestamp = Date.now(); // Generate a timestamp
+  const key = `images/${timestamp}-${file.name}`;
+  const params = {
+    Bucket: bucketName,
+    Key: key,
+    Body: file.data,
+    ACL: 'public-read',
+  };
+
+  // Uploading image to S3
+  s3.upload(params, async (err, data) => {
+    if (err) {
+      console.error('Error uploading image to S3:', err);
+      return res.status(500).json({ message: 'Error uploading image.' });
+    }
+
+    const updatedImage = data.Location; // Retrieve the updated image URL
+
+    try {
+      // Find the record by ID and update the image field
+      const updatedPhoneNumber = await RegisteredPhoneNumber.findByIdAndUpdate(
+        id,
+        { image: updatedImage }, // Update the image field with the new image URL
+        { new: true } // To return the updated record
+      );
+
+      if (!updatedPhoneNumber) {
+        return res.status(404).json({ message: 'Phone number not found.' });
+      }
+
+      res.status(200).json({
+        message: 'Image updated successfully for the phone number',
+        data: updatedPhoneNumber,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+});
+
+
+
 router.get('/getadminid/:id', async (req, res) => {
   try {
     // Find the record by ID
