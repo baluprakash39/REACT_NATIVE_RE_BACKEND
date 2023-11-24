@@ -86,6 +86,9 @@ const FormData = require('../Models/formschema');
         fouryears,
         fiveyears,
         fiveplusRSAyears,
+        oneyear,
+        twoyears,
+        threeyears
       } = req.body;
   
       const query = { "_id": req.params.id }; // Access id from URL params
@@ -106,6 +109,9 @@ const FormData = require('../Models/formschema');
             "extendedwarranty.0.fouryears": fouryears,
             "extendedwarranty.0.fiveyears": fiveyears,
             "extendedwarranty.0.fiveplusRSAyears": fiveplusRSAyears,
+            "rsa.0.oneyear": oneyear,
+            "rsa.0.twoyears": twoyears,
+            "rsa.0.threeyears": threeyears,
           }
         };
   
@@ -146,6 +152,13 @@ const FormData = require('../Models/formschema');
               fiveplusRSAyears
             }
           ],
+          rsa:[
+            {
+              oneyear,
+              twoyears,
+              threeyears
+            }
+          ]
         };
   
         const createdForm = await FormData.create(formData);

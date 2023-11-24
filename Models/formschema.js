@@ -26,7 +26,11 @@ const formSchema = new mongoose.Schema({
     fiveyears:{ type: String},
     fiveplusRSAyears:{ type: String},
   }],
- 
+  rsa:[{
+    oneyear:{ type: String},
+    twoyears:{ type: String},
+    threeyears:{ type: String},
+  }],
   colours: [{
     colourstext: { type: String },
     coloursvalue: { type: String }

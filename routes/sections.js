@@ -10,6 +10,7 @@ router.post('/addbike', jwtMiddleware.verifyToken, async (req,res) => {
         res.status (201).json({
             message:"Bike Data created",
             createdSection: section
+            
         })
     })
     .catch (error => {
