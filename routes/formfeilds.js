@@ -8,7 +8,6 @@ const FormData = require('../Models/formschema');
     try {
       const {
         section,
-        vehiclename,
         model,
         EngineCC,
         vehiclecolor,
@@ -39,7 +38,6 @@ const FormData = require('../Models/formschema');
   
       const formData = {
         section,
-        vehiclename,
         model,
         EngineCC,
         vehiclecolor,
