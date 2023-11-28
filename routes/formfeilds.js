@@ -3,6 +3,7 @@ const router = express.Router();
 const jwtMiddleware = require('../jwtMiddleware');
 
 const FormData = require('../Models/formschema'); 
+const Section = require('../Models/sectionschema');
 
   router.post('/uploadbikes',jwtMiddleware.verifyToken, async (req, res) => {
     try {
@@ -1053,8 +1054,11 @@ const FormData = require('../Models/formschema');
 router.get('/getbikes/:section', jwtMiddleware.verifyToken, async (req, res) => {
   try {
       const section = req.params.section; // Get the "section" parameter from the URL
+      console.log('sec', section)
+      const phoneNumber = req.query.phoneNumber; // Get the "phoneNumber" query parameter
+      console.log('phn', phoneNumber)
       
-      const bikes = await FormData.find({ section });
+      const bikes = await FormData.find({ section, phoneNumber});
       
       res.status(200).json({ bikes });
   } catch (error) {

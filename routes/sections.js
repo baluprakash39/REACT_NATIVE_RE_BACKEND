@@ -4,20 +4,44 @@ const jwtMiddleware = require('../jwtMiddleware');
 
 const Section = require('../Models/sectionschema'); 
 
-router.post('/addbike', jwtMiddleware.verifyToken, async (req,res) => {
-    const section = new Section(req.body)
-    section.save().then (result => {
-        res.status (201).json({
-            message:"Bike Data created",
-            createdSection: section
-            
-        })
-    })
-    .catch (error => {
-        res.status(400).json({Error:error})
-    })
+// router.post('/addbike', jwtMiddleware.verifyToken, async (req,res) => {
+//     const section = new Section(req.body)
+//     section.save().then (result => {
+//         res.status (201).json({
+//             message:"Bike Data created",
+//             createdSection: section
+
+//         })
+//     })
+//     .catch (error => {
+//         res.status(400).json({Error:error})
+//     })
     
+// });
+
+router.post('/addbike', jwtMiddleware.verifyToken, async (req, res) => {
+  try {
+    const { phoneNumber, Sectionname, } = req.body;
+
+    // Create a new instance of the Section model with the provided data
+    const sectionInstance = new Section({
+      phoneNumber,
+      Sectionname,
+      
+    });
+
+    // Save the new section to the database
+    const result = await sectionInstance.save();
+
+    res.status(201).json({
+      message: 'Bike Data created',
+      createdSection: result,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 });
+
 
 router.get('/bikes', jwtMiddleware.verifyToken, async (req,res) =>{ 
     try{         
