@@ -148,6 +148,7 @@ router.get('/getAllRegisteredPhoneNumbers', async (req, res) => {
 
   }
 });
+
 // router.get('/getAllRegisteredAdmins', async (req, res) => {
   
 //   try {
@@ -359,8 +360,6 @@ router.put('/updateImage/:id', async (req, res) => {
     }
   });
 });
-
-
 
 router.get('/getadminid/:id', async (req, res) => {
   try {

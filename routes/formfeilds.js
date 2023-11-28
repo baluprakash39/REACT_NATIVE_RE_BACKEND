@@ -15,6 +15,7 @@ const FormData = require('../Models/formschema');
         exShowroomPrice,
         registration,
         roadtax,
+        phoneNumber,
         insurance,
         hypothication,
         extendedwarranty,
@@ -45,6 +46,7 @@ const FormData = require('../Models/formschema');
         exShowroomPrice,
         registration,
         roadtax,
+        phoneNumber,
         insurance,
         hypothication,
         extendedwarranty,
@@ -1061,23 +1063,49 @@ router.get('/getbikes/:section', jwtMiddleware.verifyToken, async (req, res) => 
   }
 });
 
-router.get('/getbikes', jwtMiddleware.verifyToken, async (req, res) => {  
+// router.get('/getbikes', jwtMiddleware.verifyToken, async (req, res) => {  
 
-        try {
-            const user = await FormData.find({})
+//         try {
             
-            res.status(200).json({ user })
-        } catch (error) {
-            res.status(400).send(error)
-            console.log(error)
-        }
-    })
+//             const user = await FormData.find({})
+            
+//             res.status(200).json({ user })
+//         } catch (error) {
+//             res.status(400).send(error)
+//             console.log(error)
+//         }
+//     })
+
+router.get('/getbikes', jwtMiddleware.verifyToken, async (req, res) => {
+  try {
+      const phoneNumber = req.query.phoneNumber;
+      console.log('phn',phoneNumber)
+
+      if (!phoneNumber) {
+          return res.status(400).json({ message: 'Missing phoneNumber query parameter' });
+      }
+
+      const bikeDetails = await FormData.find({ phoneNumber });
+      console.log('bike',bikeDetails)
+
+      if (!bikeDetails || bikeDetails.length === 0) {
+          return res.status(404).json({ message: 'Bike details not found for the specified phone number' });
+      }
+
+      res.status(200).json(bikeDetails);
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+  }
+});
+
     router.put('/updatebikes/:id', jwtMiddleware.verifyToken, (req, res) => {
         FormData.findByIdAndUpdate(req.params.id, req.body)  
             .then(() => res.json('Bikes updated'))
             .catch(err => res.status(400).json(`Error: ${err}`));
 
     })
+    
     router.delete('/deletebikes/:id', jwtMiddleware.verifyToken, (req, res) => {
         FormData.findByIdAndDelete(req.params.id)  
             .then(() => res.json('Bikes deleted'))

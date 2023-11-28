@@ -10,6 +10,7 @@ const formSchema = new mongoose.Schema({
   exShowroomPrice: {type: String},
   registration: {type: String},
   roadtax:{type:String},
+  phoneNumber:{type:String},
   insurance: [{
     Basic:{ type: String},
     Nildip:{type: String},
