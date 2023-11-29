@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const registeredPhoneNumberSchema = new mongoose.Schema({
   phoneNumber: { type: String },
+  adminphoneNumber:{ type: String },
   name: { type: String },
   email: { type: String },
   companyname: { type: String },
