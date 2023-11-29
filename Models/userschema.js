@@ -5,6 +5,7 @@ const RegisteredUserSchema = new mongoose.Schema({
   phoneNumber: { type: String },
   companyname: {type: mongoose.Schema.Types.ObjectId ,ref: 'RegisteredPhoneNumber'},
   role: { type: String },
+  adminphoneNumber:{ type:String },
   currentdate:{ type: String },
   deviceId: { type: String },
   adminaccept: { type: Boolean, default: false },  // Added this line with a default value
